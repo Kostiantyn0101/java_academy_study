@@ -27,6 +27,12 @@ create table students
     foreign key (user_id) references users(id)
 );
 
+create table role_names
+(
+    id   bigint primary key auto_increment,
+    role varchar(50) not null unique
+);
+
 create table roles
 (
     user_id bigint not null,
@@ -36,8 +42,3 @@ create table roles
     foreign key (role_id) references role_names(id)
 );
 
-create table role_names
-(
-    id   bigint primary key auto_increment,
-    role varchar(50) not null unique
-);
