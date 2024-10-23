@@ -8,23 +8,28 @@ public class Teacher {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "last_name")
     private String lastName;
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    private User user;
 
-    public Teacher(String firstName, String lastName) {
+    public Teacher(String firstName, String lastName, User user) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.user = user;
     }
+
     public Teacher() {}
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

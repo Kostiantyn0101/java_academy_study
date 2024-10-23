@@ -42,3 +42,20 @@ create table roles
     foreign key (role_id) references role_names(id)
 );
 
+create table subjects
+(
+    id    bigint primary key auto_increment,
+    name  varchar(50) not null
+);
+
+create table grades
+(
+    id          bigint primary key auto_increment,
+    grade       int not null,
+    comment     varchar(255),
+    date        date not null,
+    student_id  bigint not null,
+    subject_id  bigint not null,
+    foreign key (student_id) references students(id),
+    foreign key (subject_id) references subjects(id)
+);
