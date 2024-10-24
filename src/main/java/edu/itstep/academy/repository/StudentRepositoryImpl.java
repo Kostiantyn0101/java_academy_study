@@ -20,7 +20,8 @@ public class StudentRepositoryImpl implements StudentRepository {
         return sessionFactory
                 .getCurrentSession()
                 .createQuery("from Student", Student.class)
-                .getResultList();    }
+                .getResultList();
+    }
 
     @Override
     public void saveOrUpdate(Student student) {

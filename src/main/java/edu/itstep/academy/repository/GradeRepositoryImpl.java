@@ -21,7 +21,8 @@ public class GradeRepositoryImpl implements GradeRepository {
         return sessionFactory
                 .getCurrentSession()
                 .createQuery("from Grade", Grade.class)
-                .getResultList();    }
+                .getResultList();
+    }
 
     @Override
     public void saveOrUpdate(Grade grade) {
@@ -29,12 +30,12 @@ public class GradeRepositoryImpl implements GradeRepository {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(Long id) {
 
     }
 
     @Override
-    public Grade getById(int id) {
+    public Grade getById(Long id) {
         return null;
     }
 }
