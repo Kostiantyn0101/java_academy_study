@@ -21,30 +21,30 @@ public class GradeServiceImpl implements GradeService {
     private GradeRepository gradeRepository;
 
     @Autowired
-    private StudentRepository studentRepository;
+    public StudentService studentService;
 
     @Autowired
-    private SubjectRepository subjectRepository;
+    public SubjectService subjectService;
 
     @Autowired
-    private TeacherRepository teacherRepository;
+    public TeacherService teacherService;
 
     @Override
-    public List<Grade> getAllGrades() {
+    public List<Grade> getAll() {
         return gradeRepository.getAll();
     }
 
     @Override
-    public void addGrade(Grade grade) {
+    public void add(Grade grade) {
         gradeRepository.saveOrUpdate(grade);
     }
 
     @Override
     public void saveGradeDTO(GradeDTO gradeDTO) {
         Grade grade = new Grade();
-        grade.setStudent(studentRepository.getById(gradeDTO.getStudentId()));
-        grade.setSubject(subjectRepository.getById(gradeDTO.getSubjectId()));
-        grade.setTeacher(teacherRepository.getById(gradeDTO.getTeacherId()));
+        grade.setStudent(studentService.getById(gradeDTO.getStudentId()));
+        grade.setSubject(subjectService.getById(gradeDTO.getSubjectId()));
+        grade.setTeacher(teacherService.getById(gradeDTO.getTeacherId()));
         grade.setDate(LocalDate.parse(gradeDTO.getDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         grade.setGrade(gradeDTO.getScore());
         grade.setComment(gradeDTO.getComment());
@@ -52,12 +52,22 @@ public class GradeServiceImpl implements GradeService {
     }
 
     @Override
-    public void updateGrade(Grade grade) {
+    public List<Grade> getGradesByStudent(Long studentId) {
+        return List.of();
+    }
+
+    @Override
+    public List<Grade> getGradesByTeacher(Long teacherId) {
+        return List.of();
+    }
+
+    @Override
+    public void update(Grade grade) {
         gradeRepository.saveOrUpdate(grade);
     }
 
     @Override
-    public void deleteGrade(Long gradeId) {
+    public void deleteById(Long gradeId) {
         gradeRepository.deleteById(gradeId);
     }
 }

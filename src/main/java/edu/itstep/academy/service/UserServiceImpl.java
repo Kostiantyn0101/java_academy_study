@@ -12,7 +12,7 @@ public class UserServiceImpl implements UserService{
     private UserRepository userRepository;
 
     @Override
-    public User getUserByUsername(String username) {
+    public User getByUsername(String username) {
         return userRepository.getUserByUsername(username);
     }
 }

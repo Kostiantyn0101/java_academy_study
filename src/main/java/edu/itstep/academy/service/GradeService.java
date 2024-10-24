@@ -6,9 +6,11 @@ import java.util.List;
 
 public interface GradeService {
 
-    public List<Grade> getAllGrades();
-    public void addGrade(Grade grade);
-    public void updateGrade(Grade grade);
-    public void deleteGrade(Long gradeId);
+    public List<Grade> getAll();
+    public void add(Grade grade);
+    public void update(Grade grade);
+    public void deleteById(Long gradeId);
     public void saveGradeDTO(GradeDTO gradeDTO);
+    public List<Grade> getGradesByStudent(Long studentId);
+    public List<Grade> getGradesByTeacher(Long teacherId);
 }

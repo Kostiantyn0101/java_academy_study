@@ -31,18 +31,24 @@ public class TeacherServiceImpl implements TeacherService {
     private TeacherRepository teacherRepository;
 
     @Override
+    public Teacher getById(Long id) {
+        return teacherRepository
+                .getById(id);
+    }
+
+    @Override
     public void prepairedGradePage(Model model) {
-        List<Grade> grades = gradeService.getAllGrades();
-        List<Student> students = studentService.getAllStudents();
-        List<Subject> subjects = subjectService.getAllSubjects();
+        List<Grade> grades = gradeService.getAll();
+        List<Student> students = studentService.getAll();
+        List<Subject> subjects = subjectService.getAll();
         User user = getCurrentUser();
-        Teacher teacher = teacherRepository.getByUserId(user.getId());
-        System.out.println(teacher.getId() + " " + teacher.getFirstName() + " " + teacher.getLastName());
+        Teacher teacher = getById(user.getId());
         model.addAttribute("grades", grades);
         model.addAttribute("students", students);
         model.addAttribute("subjects", subjects);
         model.addAttribute("teacher", teacher);
     }
+
 
     private User getCurrentUser()
     {
@@ -53,6 +59,6 @@ public class TeacherServiceImpl implements TeacherService {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             username = userDetails.getUsername();
         }
-        return userService.getUserByUsername(username);
+        return userService.getByUsername(username);
     }
 }

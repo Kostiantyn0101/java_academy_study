@@ -14,12 +14,11 @@ public class StudentServiceImpl implements StudentService {
     private StudentRepository studentRepository;
 
     @Override
-    public List<Student> getAllStudents() {
+    public List<Student> getAll() {
         return studentRepository.getAll();
     }
-
     @Override
-    public Student getStudentById(Long id) {
+    public Student getById(Long id) {
         return studentRepository.getById(id);
     }
 }

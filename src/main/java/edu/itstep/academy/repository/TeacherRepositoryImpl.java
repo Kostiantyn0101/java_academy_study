@@ -22,7 +22,7 @@ public class TeacherRepositoryImpl implements TeacherRepository {
 
     @Override
     @Transactional
-    public Teacher getByUserId(Long userId) {
+    public Teacher getByUsernameId(Long userId) {
         return (Teacher) sessionFactory
                 .getCurrentSession()
                 .createQuery("from Teacher t where t.user.id = :userId", Teacher.class)

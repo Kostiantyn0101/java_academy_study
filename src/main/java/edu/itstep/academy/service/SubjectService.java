@@ -5,6 +5,6 @@ import edu.itstep.academy.entity.Subject;
 import java.util.List;
 
 public interface SubjectService {
-    public List<Subject> getAllSubjects();
-    public Subject getSubjectById(Long id);
+    public List<Subject> getAll();
+    public Subject getById(Long id);
 }
