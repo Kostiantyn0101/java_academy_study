@@ -1,43 +1,32 @@
 package edu.itstep.academy.repository;
 
-import edu.itstep.academy.entity.Student;
+import edu.itstep.academy.entity.Teacher;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Repository
-public class StudentRepositoryImpl implements StudentRepository {
+public class TeacherRepositoryImpl implements TeacherRepository {
 
     @Autowired
     private SessionFactory sessionFactory;
 
     @Override
     @Transactional
-    public List<Student> getAll() {
+    public Teacher getById(Long id) {
         return sessionFactory
                 .getCurrentSession()
-                .createQuery("from Student", Student.class)
-                .getResultList();
-    }
-
-    @Override
-    public void saveOrUpdate(Student student) {
-
-    }
-
-    @Override
-    public void deleteById(Long id) {
-
+                .get(Teacher.class, id);
     }
 
     @Override
     @Transactional
-    public Student getById(Long id) {
-        return sessionFactory
+    public Teacher getByUserId(Long userId) {
+        return (Teacher) sessionFactory
                 .getCurrentSession()
-                .get(Student.class, id);
+                .createQuery("from Teacher t where t.user.id = :userId", Teacher.class)
+                .setParameter("userId", userId)
+                .uniqueResult();
     }
 }

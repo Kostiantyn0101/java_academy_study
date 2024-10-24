@@ -25,6 +25,7 @@ public class GradeRepositoryImpl implements GradeRepository {
     }
 
     @Override
+    @Transactional
     public void saveOrUpdate(Grade grade) {
         sessionFactory
                 .getCurrentSession()
@@ -37,6 +38,7 @@ public class GradeRepositoryImpl implements GradeRepository {
     }
 
     @Override
+    @Transactional
     public Grade getById(Long id) {
         return sessionFactory
                 .getCurrentSession()

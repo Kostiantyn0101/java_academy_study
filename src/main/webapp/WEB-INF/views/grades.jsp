@@ -13,7 +13,9 @@
     <title>Students grades</title>
 </head>
 <body>
+${teacher.firstName}
 <h1>List grades</h1>
+
 <table>
     <thead>
     <tr>
@@ -49,6 +51,7 @@
 </table>
 <h3>Add new grade</h3>
 <form:form action="grades/add" method="post" modelAttribute="grade">
+    <input type="hidden" name="teacherId" value="${teacher.id}"/>
     <label for="student">Student:</label>
     <select id="student" name="studentId">
         <c:forEach var="student" items="${students}">

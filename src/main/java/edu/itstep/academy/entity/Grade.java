@@ -26,6 +26,10 @@ public class Grade {
     private LocalDate date;
 
     @ManyToOne
+    @JoinColumn(name = "teacher_id", nullable = false)
+    private Teacher teacher;
+
+    @ManyToOne
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 

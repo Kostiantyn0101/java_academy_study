@@ -14,13 +14,11 @@ public class StudentServiceImpl implements StudentService {
     private StudentRepository studentRepository;
 
     @Override
-    @Transactional
     public List<Student> getAllStudents() {
         return studentRepository.getAll();
     }
 
     @Override
-    @Transactional
     public Student getStudentById(Long id) {
         return studentRepository.getById(id);
     }

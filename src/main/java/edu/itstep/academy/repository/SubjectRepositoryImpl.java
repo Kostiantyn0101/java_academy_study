@@ -35,6 +35,7 @@ public class SubjectRepositoryImpl implements SubjectRepository {
     }
 
     @Override
+    @Transactional
     public Subject getById(Long id) {
         return sessionFactory
                 .getCurrentSession()

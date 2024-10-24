@@ -15,13 +15,11 @@ public class SubjectServiceImpl implements SubjectService {
     private SubjectRepository subjectRepository;
 
     @Override
-    @Transactional
     public List<Subject> getAllSubjects() {
         return subjectRepository.getAll();
     }
 
     @Override
-    @Transactional
     public Subject getSubjectById(Long id) {
         return subjectRepository.getById(id);
     }

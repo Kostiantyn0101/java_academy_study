@@ -7,6 +7,7 @@ import edu.itstep.academy.entity.Subject;
 import edu.itstep.academy.service.GradeService;
 import edu.itstep.academy.service.StudentService;
 import edu.itstep.academy.service.SubjectService;
+import edu.itstep.academy.service.TeacherService;
 import org.springframework.stereotype.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -33,6 +34,9 @@ public class TeacherController {
     @Autowired
     private SubjectService subjectService;
 
+    @Autowired
+    private TeacherService teacherService;
+
     @RequestMapping("/students")
     public String getStudents(Model model) {
         List<Student> students = studentService.getAllStudents();
@@ -42,12 +46,7 @@ public class TeacherController {
 
     @RequestMapping("/grades")
     public String getGrades(Model model) {
-        List<Grade> grades = gradeService.getAllGrades();
-        List<Student> students = studentService.getAllStudents();
-        List<Subject> subjects = subjectService.getAllSubjects();
-        model.addAttribute("grades", grades);
-        model.addAttribute("students", students);
-        model.addAttribute("subjects", subjects);
+        teacherService.prepairedGradePage(model);
         return "grades";
     }
 
