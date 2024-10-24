@@ -1,5 +1,6 @@
 package edu.itstep.academy.service;
 
+import edu.itstep.academy.dto.GradeDTO;
 import edu.itstep.academy.entity.Grade;
 import java.util.List;
 
@@ -9,4 +10,5 @@ public interface GradeService {
     public void addGrade(Grade grade);
     public void updateGrade(Grade grade);
     public void deleteGrade(Long gradeId);
+    public void saveGradeDTO(GradeDTO gradeDTO);
 }

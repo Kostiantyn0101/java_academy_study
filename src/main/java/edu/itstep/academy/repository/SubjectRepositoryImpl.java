@@ -1,7 +1,7 @@
 package edu.itstep.academy.repository;
 
-import edu.itstep.academy.entity.Grade;
-
+import edu.itstep.academy.entity.Student;
+import edu.itstep.academy.entity.Subject;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -10,25 +10,23 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public class GradeRepositoryImpl implements GradeRepository {
+public class SubjectRepositoryImpl implements SubjectRepository {
 
     @Autowired
     private SessionFactory sessionFactory;
 
     @Override
     @Transactional
-    public List<Grade> getAll() {
+    public List<Subject> getAll() {
         return sessionFactory
                 .getCurrentSession()
-                .createQuery("from Grade", Grade.class)
+                .createQuery("from Subject ", Subject.class)
                 .getResultList();
     }
 
     @Override
-    public void saveOrUpdate(Grade grade) {
-        sessionFactory
-                .getCurrentSession()
-                .saveOrUpdate(grade);
+    public void saveOrUpdate(Subject grade) {
+
     }
 
     @Override
@@ -37,9 +35,9 @@ public class GradeRepositoryImpl implements GradeRepository {
     }
 
     @Override
-    public Grade getById(Long id) {
+    public Subject getById(Long id) {
         return sessionFactory
                 .getCurrentSession()
-                .get(Grade.class, id);
+                .get(Subject.class, id);
     }
 }

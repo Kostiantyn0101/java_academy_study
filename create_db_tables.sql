@@ -59,3 +59,6 @@ create table grades
     foreign key (student_id) references students(id),
     foreign key (subject_id) references subjects(id)
 );
+
+alter table grades
+add column teacher_id bigint not null;

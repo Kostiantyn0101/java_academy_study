@@ -22,6 +22,6 @@ public class StudentServiceImpl implements StudentService {
     @Override
     @Transactional
     public Student getStudentById(Long id) {
-        return studentRepository.findById(id);
+        return studentRepository.getById(id);
     }
 }

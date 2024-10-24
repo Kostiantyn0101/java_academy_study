@@ -8,5 +8,5 @@ public interface StudentRepository {
     List<Student> getAll();
     void saveOrUpdate(Student student);
     void deleteById(Long id);
-    Student findById(Long id);
+    Student getById(Long id);
 }

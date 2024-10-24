@@ -34,7 +34,7 @@ public class StudentRepositoryImpl implements StudentRepository {
     }
 
     @Override
-    public Student findById(Long id) {
+    public Student getById(Long id) {
         return sessionFactory
                 .getCurrentSession()
                 .get(Student.class, id);

@@ -32,3 +32,10 @@ values (1, 1),
        (5, 2),
        (6, 2),
        (7, 2);
+
+insert into subjects (id, name)
+values (1, 'C++'),
+       (2, 'C#'),
+       (3, 'Java'),
+       (4, 'JavaScript'),
+       (5, 'React')

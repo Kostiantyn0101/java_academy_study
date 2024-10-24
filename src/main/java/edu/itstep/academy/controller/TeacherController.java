@@ -1,15 +1,23 @@
 package edu.itstep.academy.controller;
 
+import edu.itstep.academy.dto.GradeDTO;
 import edu.itstep.academy.entity.Grade;
 import edu.itstep.academy.entity.Student;
+import edu.itstep.academy.entity.Subject;
 import edu.itstep.academy.service.GradeService;
 import edu.itstep.academy.service.StudentService;
+import edu.itstep.academy.service.SubjectService;
 import org.springframework.stereotype.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -22,6 +30,9 @@ public class TeacherController {
     @Autowired
     private GradeService gradeService;
 
+    @Autowired
+    private SubjectService subjectService;
+
     @RequestMapping("/students")
     public String getStudents(Model model) {
         List<Student> students = studentService.getAllStudents();
@@ -32,13 +43,21 @@ public class TeacherController {
     @RequestMapping("/grades")
     public String getGrades(Model model) {
         List<Grade> grades = gradeService.getAllGrades();
+        List<Student> students = studentService.getAllStudents();
+        List<Subject> subjects = subjectService.getAllSubjects();
         model.addAttribute("grades", grades);
+        model.addAttribute("students", students);
+        model.addAttribute("subjects", subjects);
         return "grades";
     }
 
     @PostMapping("/grades/add")
-    public String addGrade(@ModelAttribute Grade grade) {
-        gradeService.addGrade(grade);
+    public String addGrade(@ModelAttribute("grade") GradeDTO gradeDTO, BindingResult result) {
+        if (result.hasErrors()) {
+            result.getAllErrors().forEach(error -> System.out.println(error.getDefaultMessage()));
+            return "add-grade";
+        }
+        gradeService.saveGradeDTO(gradeDTO);
         return "redirect:/teacher/grades";
     }
 }
