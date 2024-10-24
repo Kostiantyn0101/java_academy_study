@@ -16,7 +16,6 @@ public class TeacherController {
     @RequestMapping("/students")
     public String getStudents(Model model) {
         List<Student> students = studentRepository.getAll();
-        students.forEach(System.out::println);
         model.addAttribute("students", students);
         return "students";
     }
