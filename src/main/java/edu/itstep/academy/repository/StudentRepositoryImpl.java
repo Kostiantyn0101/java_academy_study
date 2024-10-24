@@ -29,12 +29,14 @@ public class StudentRepositoryImpl implements StudentRepository {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(Long id) {
 
     }
 
     @Override
-    public Student getById(int id) {
-        return null;
+    public Student findById(Long id) {
+        return sessionFactory
+                .getCurrentSession()
+                .get(Student.class, id);
     }
 }
