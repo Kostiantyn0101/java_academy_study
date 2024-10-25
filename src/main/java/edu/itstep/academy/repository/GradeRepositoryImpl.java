@@ -62,6 +62,37 @@ public class GradeRepositoryImpl implements GradeRepository {
 
     @Override
     @Transactional
+    public List<Grade> getByStudentIdAndSubjectId(Long studentId, Long subjectId) {
+        return sessionFactory.getCurrentSession()
+                .createQuery("FROM Grade g WHERE g.student.id = :studentId AND g.subject.id = :subjectId", Grade.class)
+                .setParameter("studentId", studentId)
+                .setParameter("subjectId", subjectId)
+                .getResultList();
+    }
+
+    @Override
+    @Transactional
+    public List<Grade> getByStudentIdAndDate(Long studentId, LocalDate date) {
+        return sessionFactory.getCurrentSession()
+                .createQuery("FROM Grade g WHERE g.student.id = :studentId AND g.date = :date", Grade.class)
+                .setParameter("studentId", studentId)
+                .setParameter("date", date)
+                .getResultList();
+    }
+
+    @Override
+    @Transactional
+    public List<Grade> getByStudentIdAndSubjectIdAndDate(Long studentId, Long subjectId, LocalDate date) {
+        return sessionFactory.getCurrentSession()
+                .createQuery("FROM Grade g WHERE g.student.id = :studentId AND g.subject.id = :subjectId AND g.date = :date", Grade.class)
+                .setParameter("studentId", studentId)
+                .setParameter("subjectId", subjectId)
+                .setParameter("date", date)
+                .getResultList();
+    }
+
+    @Override
+    @Transactional
     public List<Grade> getByTeacherId(Long id) {
         return sessionFactory.getCurrentSession()
                 .createQuery("FROM Grade g WHERE g.teacher.id = :teacherId", Grade.class)

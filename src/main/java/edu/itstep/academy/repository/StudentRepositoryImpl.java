@@ -40,4 +40,14 @@ public class StudentRepositoryImpl implements StudentRepository {
                 .getCurrentSession()
                 .get(Student.class, id);
     }
+
+    @Override
+    @Transactional
+    public Student getByUsernameId(Long userId) {
+        return (Student) sessionFactory
+                .getCurrentSession()
+                .createQuery("from Student t where t.user.id = :userId", Student.class)
+                .setParameter("userId", userId)
+                .uniqueResult();
+    }
 }

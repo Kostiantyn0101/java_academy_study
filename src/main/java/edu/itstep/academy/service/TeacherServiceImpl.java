@@ -34,8 +34,11 @@ public class TeacherServiceImpl implements TeacherService {
                 .getById(id);
     }
 
-
-
+    @Override
+    public Teacher getByUserNameId(Long id) {
+        return teacherRepository
+                .getByUsernameId(id);
+    }
 
 
 }

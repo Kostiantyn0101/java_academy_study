@@ -51,6 +51,23 @@ public class GradeServiceImpl implements GradeService {
     }
 
     @Override
+    public List<Grade> getGradesByStudentIdAndSubjectId(Long studentId, Long subjectId) {
+        return gradeRepository.getByStudentIdAndSubjectId(studentId, subjectId);
+    }
+
+    @Override
+    public List<Grade> getGradesByStudentIdAndDate(Long studentId, LocalDate date) {
+        return gradeRepository.getByStudentIdAndDate(studentId, date);
+    }
+
+    @Override
+    public List<Grade> getGradesByStudentIdAndSubjectIdAndDate(Long studentId, Long subjectId, LocalDate date) {
+        return gradeRepository.getByStudentIdAndSubjectIdAndDate(studentId, subjectId, date);
+    }
+
+
+
+    @Override
     public List<Grade> getGradesByTeacherId(Long teacherId) {
         return gradeRepository.getByTeacherId(teacherId);
     }
@@ -98,19 +115,36 @@ public class GradeServiceImpl implements GradeService {
         List<Student> students = studentService.getAll();
         List<Subject> subjects = subjectService.getAll();
         User user = userService.getCurrentUser();
-        Teacher teacher = teacherService.getById(user.getId());
+        Teacher teacher = teacherService.getByUserNameId(user.getId());
+        if (teacher != null) {
+            List<Grade> grades = getGradesByTeacherIdAndFilters(subjectId, dateStr, teacher.getId());
+            prepareGradeModel(model, grades, students, subjects, teacher, gradeDTO, dateStr, null);
+        }
+        else {
+            Student student = studentService.getByUserNameId(user.getId());
+            List<Grade> grades = getGradesByStudentIdAndFilters(subjectId, dateStr, student.getId());
+            prepareGradeModel(model, grades, students, subjects, null, gradeDTO, dateStr, student);
+        }
+    }
 
-        List<Grade> grades = getGradesByTeacherIdAndFilters(subjectId, dateStr, teacher.getId());
-
+    @Override
+    public void prepareGradeModel(Model model, List<Grade> grades, List<Student> students,
+                                  List<Subject> subjects, Teacher teacher, GradeDTO gradeDTO,
+                                  String dateStr, Student student) {
         model.addAttribute("grades", grades);
         model.addAttribute("students", students);
         model.addAttribute("subjects", subjects);
-        model.addAttribute("teacher", teacher);
+        if (teacher != null) {
+            model.addAttribute("teacher", teacher);
+        } else {
+            model.addAttribute("student", student);
+        }
         model.addAttribute("gradeDTO", gradeDTO);
         if (dateStr != null && !dateStr.isEmpty()) {
             model.addAttribute("dateStr", dateStr);
         }
     }
+
 
     @Override
     public void prepareEditPage(Model model, Long gradeId) {
@@ -150,6 +184,25 @@ public class GradeServiceImpl implements GradeService {
             return getGradesByTeacherIdAndDate(teacherId, date);
         } else {
             return getGradesByTeacherId(teacherId);
+        }
+    }
+
+    @Override
+    public List<Grade> getGradesByStudentIdAndFilters(Long subjectId, String dateStr, Long studentId) {
+        LocalDate date = null;
+        if (dateStr != null && !dateStr.isEmpty()) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            date = LocalDate.parse(dateStr, formatter);
+        }
+
+        if (subjectId != null && date != null) {
+            return getGradesByStudentIdAndSubjectIdAndDate(studentId, subjectId, date);
+        } else if (subjectId != null) {
+            return getGradesByStudentIdAndSubjectId(studentId, subjectId);
+        } else if (date != null) {
+            return getGradesByStudentIdAndDate(studentId, date);
+        } else {
+            return getGradesByStudentId(studentId);
         }
     }
 

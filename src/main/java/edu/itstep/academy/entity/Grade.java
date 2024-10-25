@@ -2,7 +2,7 @@ package edu.itstep.academy.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import javax.validation.constraints.*;
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -16,6 +16,8 @@ public class Grade {
     @Column(name = "id")
     private Long id;
 
+    @Min(value = 0, message = "Min 0")
+    @Max(value = 100, message = "Max 100")
     @Column(name = "grade")
     private int grade;
 
@@ -23,6 +25,7 @@ public class Grade {
     private String comment;
 
     @Column(name = "date")
+    @NotNull(message = "Date is empty!")
     private LocalDate date;
 
     @ManyToOne

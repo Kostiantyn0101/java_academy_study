@@ -5,4 +5,5 @@ import org.springframework.ui.Model;
 
 public interface TeacherService {
     public Teacher getById(Long id);
+    public Teacher getByUserNameId(Long id);
 }

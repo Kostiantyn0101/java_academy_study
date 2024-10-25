@@ -1,9 +1,7 @@
 package edu.itstep.academy.controller;
 
 import edu.itstep.academy.dto.GradeDTO;
-import edu.itstep.academy.entity.Grade;
 import edu.itstep.academy.entity.Student;
-import edu.itstep.academy.entity.Subject;
 import edu.itstep.academy.service.GradeService;
 import edu.itstep.academy.service.StudentService;
 import edu.itstep.academy.service.SubjectService;
@@ -14,8 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -27,12 +24,6 @@ public class TeacherController {
 
     @Autowired
     private GradeService gradeService;
-
-    @Autowired
-    private SubjectService subjectService;
-
-    @Autowired
-    private TeacherService teacherService;
 
     @RequestMapping("/students")
     public String getStudents(Model model) {
@@ -68,7 +59,7 @@ public class TeacherController {
     }
 
     @PostMapping("/grades/save")
-    public String saveGrade(@ModelAttribute("gradeDTO") GradeDTO gradeDTO, BindingResult result) {
+    public String saveGrade(@Valid @ModelAttribute("gradeDTO") GradeDTO gradeDTO, BindingResult result) {
         if (result.hasErrors()) {
             return "grade-form";
         }

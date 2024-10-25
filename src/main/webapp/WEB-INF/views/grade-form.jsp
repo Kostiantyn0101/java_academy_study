@@ -34,13 +34,13 @@
     <form:errors path="subjectId"/>
 
     <label for="date">Date:</label>
-    <form:input type="date" id="date" path="date" />
+    <form:input type="date" id="date" path="date" required="true"/>
     <form:errors path="date"/>
 
     <br>
 
     <label for="grade">Mark:</label>
-    <form:input type="number" id="grade" path="grade" min="1" max="100"/>
+    <form:input type="number" id="grade" path="grade" min="1" max="100" required="true"/>
     <form:errors path="grade"/>
 
     <br>
