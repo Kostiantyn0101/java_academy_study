@@ -42,8 +42,10 @@ public class TeacherController {
     }
 
     @RequestMapping("/grades")
-    public String getGrades(Model model) {
-        gradeService.prepareGradePage(model, new GradeDTO());
+    public String getGrades(Model model,
+                            @RequestParam(required = false) Long subjectId,
+                            @RequestParam(required = false) String dateStr) {
+        gradeService.prepareGradePage(model, new GradeDTO(), subjectId, dateStr);
         return "grades";
     }
 
@@ -53,13 +55,9 @@ public class TeacherController {
         return "redirect:/teacher/grades";
     }
 
-
-    //адаптувати для форми, розібратись з підготовкою даних щоб мінімізути кількість методів
-
-
     @RequestMapping("/grades/add")
     public String addGrade(Model model) {
-        gradeService.prepareGradePage(model, new GradeDTO());
+        gradeService.prepareGradePage(model, new GradeDTO(), null, null);
         return "grade-form";
     }
 

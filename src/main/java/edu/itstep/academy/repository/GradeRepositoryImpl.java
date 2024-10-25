@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -67,4 +68,36 @@ public class GradeRepositoryImpl implements GradeRepository {
                 .setParameter("teacherId", id)
                 .getResultList();
     }
+
+    @Override
+    @Transactional
+    public List<Grade> getByTeacherIdAndSubjectId(Long teacherId, Long subjectId) {
+        return sessionFactory.getCurrentSession()
+                .createQuery("FROM Grade g WHERE g.teacher.id = :teacherId AND g.subject.id = :subjectId", Grade.class)
+                .setParameter("teacherId", teacherId)
+                .setParameter("subjectId", subjectId)
+                .getResultList();
+    }
+
+    @Override
+    @Transactional
+    public List<Grade> getByTeacherIdAndDate(Long teacherId, LocalDate date) {
+        return sessionFactory.getCurrentSession()
+                .createQuery("FROM Grade g WHERE g.teacher.id = :teacherId AND g.date = :date", Grade.class)
+                .setParameter("teacherId", teacherId)
+                .setParameter("date", date)
+                .getResultList();
+    }
+
+    @Override
+    @Transactional
+    public List<Grade> getByTeacherIdAndSubjectIdAndDate(Long teacherId, Long subjectId, LocalDate date) {
+        return sessionFactory.getCurrentSession()
+                .createQuery("FROM Grade g WHERE g.teacher.id = :teacherId AND g.subject.id = :subjectId AND g.date = :date", Grade.class)
+                .setParameter("teacherId", teacherId)
+                .setParameter("subjectId", subjectId)
+                .setParameter("date", date)
+                .getResultList();
+    }
+
 }

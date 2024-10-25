@@ -8,7 +8,24 @@
 <body>
 ${teacher.firstName}
 <h1>List grades</h1>
+<h3>Filter Grades</h3>
+<form action="${pageContext.request.contextPath}/teacher/grades" method="get">
+    <label for="subject_filter">Subject:</label>
+    <select id="subject_filter" name="subjectId">
+        <option value="">All</option>
+        <c:forEach var="subject" items="${subjects}">
+            <option value="${subject.id}" ${subject.id == param.subjectId ? 'selected' : ''}>
+                    ${subject.name}
+            </option>
+        </c:forEach>
+    </select>
 
+    <label for="date_filter">Date:</label>
+<%--    <form:input type="date" id="date_filter" path="date" />--%>
+    <input type="date" id="date_filter" name="dateStr" value="${dateStr}"/>
+
+    <input type="submit" value="Filter"/>
+</form>
 <table>
     <thead>
     <tr>
