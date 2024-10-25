@@ -2,43 +2,57 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Students grades</title>
+    <title>Students Grades</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<security:authorize access="hasRole('TEACHER')">
-    ${teacher.firstName}
-</security:authorize>
-<security:authorize access="hasRole('STUDENT')">
-    ${student.firstName}
-</security:authorize>
-<h1>List grades</h1>
-<h3>Filter Grades</h3>
-<security:authorize access="hasRole('TEACHER')">
-    <form action="${pageContext.request.contextPath}/teacher/grades" method="get">
-</security:authorize>
-<security:authorize access="hasRole('STUDENT')">
-    <form action="${pageContext.request.contextPath}/student/grades" method="get">
-</security:authorize>
-        <label for="subject_filter">Subject:</label>
-        <select id="subject_filter" name="subjectId">
-            <option value="">All</option>
-            <c:forEach var="subject" items="${subjects}">
-                <option value="${subject.id}" ${subject.id == param.subjectId ? 'selected' : ''}>
-                        ${subject.name}
-                </option>
-            </c:forEach>
-        </select>
+<div class="container mt-5">
+    <security:authorize access="hasRole('TEACHER')">
+        <h5 class="text-primary">${teacher.firstName}</h5>
+    </security:authorize>
+    <security:authorize access="hasRole('STUDENT')">
+        <h5 class="text-primary">${student.firstName}</h5>
+    </security:authorize>
 
-        <label for="date_filter">Date:</label>
-        <%--    <form:input type="date" id="date_filter" path="date" />--%>
-        <input type="date" id="date_filter" name="dateStr" value="${dateStr}"/>
+    <div class="text-center mb-4">
+        <h1>List of Grades</h1>
+    </div>
 
-        <input type="submit" value="Filter"/>
-    </form>
-    <table>
-        <thead>
+    <div class="card p-4 mb-4">
+        <h3 class="mb-3">Filter Grades</h3>
+        <security:authorize access="hasRole('TEACHER')">
+        <form action="${pageContext.request.contextPath}/teacher/grades" method="get">
+            </security:authorize>
+            <security:authorize access="hasRole('STUDENT')">
+            <form action="${pageContext.request.contextPath}/student/grades" method="get">
+                </security:authorize>
+
+                <div class="form-group">
+                    <label for="subject_filter">Subject:</label>
+                    <select id="subject_filter" name="subjectId" class="form-control">
+                        <option value="">All</option>
+                        <c:forEach var="subject" items="${subjects}">
+                            <option value="${subject.id}" ${subject.id == param.subjectId ? 'selected' : ''}>
+                                    ${subject.name}
+                            </option>
+                        </c:forEach>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="date_filter">Date:</label>
+                    <input type="date" id="date_filter" name="dateStr" value="${dateStr}" class="form-control"/>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Filter</button>
+        </form>
+    </div>
+
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
         <tr>
             <th>Student</th>
             <th>Subject</th>
@@ -66,58 +80,68 @@
                 <td>${grade.comment}</td>
                 <security:authorize access="hasRole('TEACHER')">
                     <td>
-                        <input type="button" value="edit" onclick="window.location.href='${editButton}'"/>
-                        <input type="button" value="delete" onclick="window.location.href='${deleteButton}'"/>
+                        <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='${editButton}'">Edit</button>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="window.location.href='${deleteButton}'">Delete</button>
                     </td>
                 </security:authorize>
             </tr>
         </c:forEach>
         </tbody>
     </table>
+
     <security:authorize access="hasRole('TEACHER')">
-    <h3>Add new grade</h3>
-        <form:form action="${pageContext.request.contextPath}/teacher/grades/save" method="post" modelAttribute="gradeDTO">
-            <input type="hidden" name="id" value="${gradeDTO.id}"/>
-            <input type="hidden" name="teacherId" value="${teacher.id}"/>
-            <label for="student">Student:</label>
-            <select id="student" name="studentId">
-                <c:forEach var="student" items="${students}">
-                    <option value="${student.id}">${student.firstName} - ${student.lastName}</option>
-                </c:forEach>
-            </select>
+        <div class="card p-4 mt-4">
+            <h3 class="mb-3 text-center">Add New Grade</h3>
+            <form:form action="${pageContext.request.contextPath}/teacher/grades/save" method="post" modelAttribute="gradeDTO">
+                <input type="hidden" name="id" value="${gradeDTO.id}"/>
+                <input type="hidden" name="teacherId" value="${teacher.id}"/>
 
-            <br>
-            <label for="subject">Subject:</label>
-            <select id="subject" name="subjectId">
-                <c:forEach var="subject" items="${subjects}">
-                    <option value="${subject.id}">${subject.name}</option>
-                </c:forEach>
-            </select>
-                <form:errors path="subjectId"/>
+                <div class="form-group">
+                    <label for="student">Student:</label>
+                    <select id="student" name="studentId" class="form-control">
+                        <c:forEach var="student" items="${students}">
+                            <option value="${student.id}">${student.firstName} - ${student.lastName}</option>
+                        </c:forEach>
+                    </select>
+                    <form:errors path="studentId" cssClass="text-danger"/>
+                </div>
 
-            <br>
+                <div class="form-group">
+                    <label for="subject">Subject:</label>
+                    <select id="subject" name="subjectId" class="form-control">
+                        <c:forEach var="subject" items="${subjects}">
+                            <option value="${subject.id}">${subject.name}</option>
+                        </c:forEach>
+                    </select>
+                    <form:errors path="subjectId" cssClass="text-danger"/>
+                </div>
 
-            <label for="date">Date:</label>
-                <form:input type="date" id="date" path="date" required="true"/>
-                <form:errors path="date"/>
+                <div class="form-group">
+                    <label for="date">Date:</label>
+                    <form:input type="date" id="date" path="date" class="form-control" required="true"/>
+                    <form:errors path="date" cssClass="text-danger"/>
+                </div>
 
-            <br>
+                <div class="form-group">
+                    <label for="grade">Mark:</label>
+                    <form:input type="number" id="grade" path="grade" class="form-control" min="1" max="100" required="true"/>
+                    <form:errors path="grade" cssClass="text-danger"/>
+                </div>
 
-            <label for="grade">Mark:</label>
-                <form:input type="number" id="grade" path="grade" min="1" max="100" required="true"/>
-                <form:errors path="grade"/>
+                <div class="form-group">
+                    <label for="comment">Comment:</label>
+                    <form:textarea id="comment" path="comment" class="form-control"/>
+                    <form:errors path="comment" cssClass="text-danger"/>
+                </div>
 
-            <br>
-
-            <label for="comment">Comment:</label>
-                <form:textarea id="comment" path="comment"/>
-                <form:errors path="comment"/>
-
-            <br>
-
-            <input type="submit" value="Add mark">
-        </form:form>
+                <button type="submit" class="btn btn-primary btn-lg w-100">Add Grade</button>
+            </form:form>
+        </div>
     </security:authorize>
+</div>
 
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

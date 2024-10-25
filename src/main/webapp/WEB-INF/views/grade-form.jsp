@@ -4,54 +4,67 @@
 <html>
 <head>
     <title>Grade</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<h3>Add new grade</h3>
-<form:form action="${pageContext.request.contextPath}/teacher/grades/save" method="post" modelAttribute="gradeDTO">
-    <input type="hidden" name="id" value="${gradeDTO.id}"/>
-    <input type="hidden" name="teacherId" value="${teacher.id}"/>
-    <label for="student">Student:</label>
-    <label for="student">Student:</label>
-    <select id="student" name="studentId">
-        <c:forEach var="student" items="${students}">
-            <option value="${student.id}" ${student.id == gradeDTO.studentId ? 'selected' : ''}>
-                    ${student.firstName} - ${student.lastName}
-            </option>
-        </c:forEach>
-    </select>
-    <form:errors path="studentId"/>
-    <br>
+    <div class="container mt-5">
+        <div class="text-center">
+            <h3 class="mb-4">Grade</h3>
+        </div>
+        <form:form action="${pageContext.request.contextPath}/teacher/grades/save" method="post" modelAttribute="gradeDTO" class="border p-4 rounded">
+            <input type="hidden" name="id" value="${gradeDTO.id}"/>
+            <input type="hidden" name="teacherId" value="${teacher.id}"/>
 
-    <label for="subject">Subject:</label>
-    <select id="subject" name="subjectId">
-        <c:forEach var="subject" items="${subjects}">
-            <option value="${subject.id}" ${subject.id == gradeDTO.subjectId ? 'selected' : ''}>
-                    ${subject.name}
-            </option>
-        </c:forEach>
-    </select>
-    <br>
-    <form:errors path="subjectId"/>
+            <div class="form-group">
+                <label for="student">Student:</label>
+                <select id="student" name="studentId" class="form-control">
+                    <c:forEach var="student" items="${students}">
+                        <option value="${student.id}" ${student.id == gradeDTO.studentId ? 'selected' : ''}>
+                                ${student.firstName} - ${student.lastName}
+                        </option>
+                    </c:forEach>
+                </select>
+                <form:errors path="studentId" cssClass="text-danger"/>
+            </div>
 
-    <label for="date">Date:</label>
-    <form:input type="date" id="date" path="date" required="true"/>
-    <form:errors path="date"/>
+            <div class="form-group">
+                <label for="subject">Subject:</label>
+                <select id="subject" name="subjectId" class="form-control">
+                    <c:forEach var="subject" items="${subjects}">
+                        <option value="${subject.id}" ${subject.id == gradeDTO.subjectId ? 'selected' : ''}>
+                                ${subject.name}
+                        </option>
+                    </c:forEach>
+                </select>
+                <form:errors path="subjectId" cssClass="text-danger"/>
+            </div>
 
-    <br>
+            <div class="form-group">
+                <label for="date">Date:</label>
+                <form:input type="date" id="date" path="date" class="form-control" required="true"/>
+                <form:errors path="date" cssClass="text-danger"/>
+            </div>
 
-    <label for="grade">Mark:</label>
-    <form:input type="number" id="grade" path="grade" min="1" max="100" required="true"/>
-    <form:errors path="grade"/>
+            <div class="form-group">
+                <label for="grade">Mark:</label>
+                <form:input type="number" id="grade" path="grade" class="form-control" min="1" max="100" required="true"/>
+                <form:errors path="grade" cssClass="text-danger"/>
+            </div>
 
-    <br>
+            <div class="form-group">
+                <label for="comment">Comment:</label>
+                <form:textarea id="comment" path="comment" class="form-control"/>
+                <form:errors path="comment" cssClass="text-danger"/>
+            </div>
 
-    <label for="comment">Comment:</label>
-    <form:textarea id="comment" path="comment"/>
-    <form:errors path="comment"/>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-lg w-50">Save</button>
+            </div>
+        </form:form>
+    </div>
 
-    <br>
-
-    <input type="submit" value="Save">
-</form:form>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
