@@ -70,9 +70,9 @@ public class TeacherController {
     }
 
     @PostMapping("/grades/save")
-    public String saveGrade(@ModelAttribute("grade") GradeDTO gradeDTO, BindingResult result) {
+    public String saveGrade(@ModelAttribute("gradeDTO") GradeDTO gradeDTO, BindingResult result) {
         if (result.hasErrors()) {
-            return "grades";
+            return "grade-form";
         }
         gradeService.saveGradeDTO(gradeDTO);
         return "redirect:/teacher/grades";

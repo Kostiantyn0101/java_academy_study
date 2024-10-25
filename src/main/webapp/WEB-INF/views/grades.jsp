@@ -35,7 +35,7 @@ ${teacher.firstName}
             <td>${grade.grade}</td>
             <td>${grade.comment}</td>
             <td>
-                <input type="button" value="edit" onclick="window.location.href='${updateButton}'"/>
+                <input type="button" value="edit" onclick="window.location.href='${editButton}'"/>
                 <input type="button" value="delete" onclick="window.location.href='${deleteButton}'"/>
             </td>
         </tr>
@@ -43,7 +43,8 @@ ${teacher.firstName}
     </tbody>
 </table>
 <h3>Add new grade</h3>
-<form:form action="grades/save" method="post" modelAttribute="gradeDTO">
+<form:form action="${pageContext.request.contextPath}/teacher/grades/save" method="post" modelAttribute="gradeDTO">
+    <input type="hidden" name="id" value="${gradeDTO.id}"/>
     <input type="hidden" name="teacherId" value="${teacher.id}"/>
     <label for="student">Student:</label>
     <select id="student" name="studentId">

@@ -47,7 +47,7 @@ public class GradeServiceImpl implements GradeService {
         grade.setStudent(studentService.getById(gradeDTO.getStudentId()));
         grade.setSubject(subjectService.getById(gradeDTO.getSubjectId()));
         grade.setTeacher(teacherService.getById(gradeDTO.getTeacherId()));
-        grade.setDate(LocalDate.parse(gradeDTO.getDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        grade.setDate(gradeDTO.getDate());
         grade.setGrade(gradeDTO.getGrade());
         grade.setComment(gradeDTO.getComment());
         gradeRepository.saveOrUpdate(grade);
@@ -106,7 +106,7 @@ public class GradeServiceImpl implements GradeService {
         gradeDTO.setId(grade.getId());
         gradeDTO.setGrade(grade.getGrade());
         gradeDTO.setComment(grade.getComment());
-        gradeDTO.setDate(gradeDTO.getDate());
+        gradeDTO.setDate(grade.getDate());
         gradeDTO.setTeacherId(grade.getTeacher().getId());
         gradeDTO.setStudentId(grade.getStudent().getId());
         gradeDTO.setSubjectId(grade.getSubject().getId());
