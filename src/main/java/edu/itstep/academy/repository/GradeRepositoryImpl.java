@@ -33,8 +33,13 @@ public class GradeRepositoryImpl implements GradeRepository {
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
-
+        sessionFactory
+                .getCurrentSession()
+                .createQuery("DELETE FROM Grade g WHERE g.id = :id")
+                .setParameter("id", id)
+                .executeUpdate();
     }
 
     @Override
@@ -43,5 +48,23 @@ public class GradeRepositoryImpl implements GradeRepository {
         return sessionFactory
                 .getCurrentSession()
                 .get(Grade.class, id);
+    }
+
+    @Override
+    @Transactional
+    public List<Grade> getByStudentId(Long id) {
+        return sessionFactory.getCurrentSession()
+                .createQuery("FROM Grade g WHERE g.student.id = :studentId", Grade.class)
+                .setParameter("studentId", id)
+                .getResultList();
+    }
+
+    @Override
+    @Transactional
+    public List<Grade> getByTeacherId(Long id) {
+        return sessionFactory.getCurrentSession()
+                .createQuery("FROM Grade g WHERE g.teacher.id = :teacherId", Grade.class)
+                .setParameter("teacherId", id)
+                .getResultList();
     }
 }

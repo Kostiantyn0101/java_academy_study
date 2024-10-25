@@ -4,7 +4,6 @@ import edu.itstep.academy.entity.Subject;
 import edu.itstep.academy.repository.SubjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

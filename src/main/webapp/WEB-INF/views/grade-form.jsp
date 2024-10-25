@@ -3,45 +3,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Students grades</title>
+    <title>Grade</title>
 </head>
 <body>
-${teacher.firstName}
-<h1>List grades</h1>
-
-<table>
-    <thead>
-    <tr>
-        <th>Student</th>
-        <th>Subject</th>
-        <th>Dte</th>
-        <th>Grade</th>
-        <th>Comment</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach var="grade" items="${grades}">
-        <c:url var="editButton" value="/teacher/grades/edit/">
-            <c:param name="id" value="${grade.id}"/>
-        </c:url>
-        <c:url var="deleteButton" value="/teacher/grades/delete/">
-            <c:param name="id" value="${grade.id}"/>
-        </c:url>
-        <tr>
-            <td>${grade.student.firstName} - ${grade.student.lastName}</td>
-            <td>${grade.subject.name}</td>
-            <td>${grade.date}</td>
-            <td>${grade.grade}</td>
-            <td>${grade.comment}</td>
-            <td>
-                <input type="button" value="edit" onclick="window.location.href='${updateButton}'"/>
-                <input type="button" value="delete" onclick="window.location.href='${deleteButton}'"/>
-            </td>
-        </tr>
-    </c:forEach>
-    </tbody>
-</table>
 <h3>Add new grade</h3>
 <form:form action="grades/save" method="post" modelAttribute="gradeDTO">
     <input type="hidden" name="teacherId" value="${teacher.id}"/>
@@ -51,6 +15,13 @@ ${teacher.firstName}
             <option value="${student.id}">${student.firstName} - ${student.lastName}</option>
         </c:forEach>
     </select>
+<%--    <form:select id="student" path="studentId">--%>
+<%--        <form:options items="${student.id}" itemValue="${student.firstName} - ${student.lastName}"/>--%>
+<%--&lt;%&ndash;        <c:forEach var="student" items="${students}">&ndash;%&gt;--%>
+<%--&lt;%&ndash;            <option value="${student.id}">${student.firstName} - ${student.lastName}</option>&ndash;%&gt;--%>
+<%--&lt;%&ndash;        </c:forEach>&ndash;%&gt;--%>
+<%--    </form:select>--%>
+<%--    <form:errors path="studentId"/>--%>
 
     <br>
     <label for="subject">Subject:</label>
@@ -70,8 +41,8 @@ ${teacher.firstName}
     <br>
 
     <label for="grade">Mark:</label>
-    <form:input type="number" id="grade" path="grade" min="1" max="100" />
-    <form:errors path="grade"/>
+    <form:input type="number" id="grade" path="grade" min="1" max="100"/>
+    <form:errors path="score"/>
 
     <br>
 
@@ -83,6 +54,5 @@ ${teacher.firstName}
 
     <input type="submit" value="Add mark">
 </form:form>
-
 </body>
 </html>

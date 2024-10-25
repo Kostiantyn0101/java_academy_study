@@ -8,4 +8,6 @@ public interface GradeRepository {
     void saveOrUpdate(Grade grade);
     void deleteById(Long id);
     Grade getById(Long id);
+    List<Grade> getByStudentId(Long id);
+    List<Grade> getByTeacherId(Long id);
 }

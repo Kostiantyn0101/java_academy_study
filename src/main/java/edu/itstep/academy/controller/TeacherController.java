@@ -12,10 +12,7 @@ import org.springframework.stereotype.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -39,22 +36,43 @@ public class TeacherController {
 
     @RequestMapping("/students")
     public String getStudents(Model model) {
-        List<Student> students = studentService.getAllStudents();
+        List<Student> students = studentService.getAll();
         model.addAttribute("students", students);
         return "students";
     }
 
     @RequestMapping("/grades")
     public String getGrades(Model model) {
-        teacherService.prepairedGradePage(model);
+        gradeService.prepareGradePage(model, new GradeDTO());
         return "grades";
     }
 
-    @PostMapping("/grades/add")
-    public String addGrade(@ModelAttribute("grade") GradeDTO gradeDTO, BindingResult result) {
+    @RequestMapping("/grades/delete")
+    public String delete(@RequestParam Long id) {
+        gradeService.deleteById(id);
+        return "redirect:/teacher/grades";
+    }
+
+
+    //адаптувати для форми, розібратись з підготовкою даних щоб мінімізути кількість методів
+
+
+    @RequestMapping("/grades/add")
+    public String addGrade(Model model) {
+        gradeService.prepareGradePage(model, new GradeDTO());
+        return "grade-form";
+    }
+
+    @RequestMapping("/grades/edit")
+    public String editGrade(@RequestParam Long id, Model model) {
+        gradeService.prepareEditPage(model, id);
+        return "grade-form";
+    }
+
+    @PostMapping("/grades/save")
+    public String saveGrade(@ModelAttribute("grade") GradeDTO gradeDTO, BindingResult result) {
         if (result.hasErrors()) {
-            result.getAllErrors().forEach(error -> System.out.println(error.getDefaultMessage()));
-            return "add-grade";
+            return "grades";
         }
         gradeService.saveGradeDTO(gradeDTO);
         return "redirect:/teacher/grades";

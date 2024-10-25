@@ -1,6 +1,5 @@
 package edu.itstep.academy.service;
 
-import edu.itstep.academy.entity.Grade;
 import edu.itstep.academy.entity.Student;
 
 import java.util.List;
