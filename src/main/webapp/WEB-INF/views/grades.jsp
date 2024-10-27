@@ -21,15 +21,18 @@
         <h1>List of Grades</h1>
     </div>
 
+    <security:authorize access="hasRole('TEACHER')">
+        <c:set var="formAction" value="${pageContext.request.contextPath}/teacher/grades" />
+    </security:authorize>
+    <security:authorize access="hasRole('STUDENT')">
+        <c:set var="formAction" value="${pageContext.request.contextPath}/student/grades" />
+    </security:authorize>
+
+
+
     <div class="card p-4 mb-4">
         <h3 class="mb-3">Filter Grades</h3>
-        <security:authorize access="hasRole('TEACHER')">
-        <form action="${pageContext.request.contextPath}/teacher/grades" method="get">
-            </security:authorize>
-            <security:authorize access="hasRole('STUDENT')">
-            <form action="${pageContext.request.contextPath}/student/grades" method="get">
-                </security:authorize>
-
+        <form action="${formAction}" method="get">
                 <div class="form-group">
                     <label for="subject_filter">Subject:</label>
                     <select id="subject_filter" name="subjectId" class="form-control">
@@ -50,13 +53,6 @@
                 <button type="submit" class="btn btn-primary btn-block">Filter</button>
         </form>
     </div>
-
-    <security:authorize access="hasRole('TEACHER')">
-        <c:set var="formAction" value="${pageContext.request.contextPath}/teacher/grades" />
-    </security:authorize>
-    <security:authorize access="hasRole('STUDENT')">
-        <c:set var="formAction" value="${pageContext.request.contextPath}/student/grades" />
-    </security:authorize>
 
     <form method="get" action="${formAction}" class="form-inline">
         <div class="form-group mb-2">

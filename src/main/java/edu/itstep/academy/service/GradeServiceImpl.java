@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+
 @Service
 public class GradeServiceImpl implements GradeService {
 
@@ -158,23 +159,8 @@ public class GradeServiceImpl implements GradeService {
     @Override
     public void prepareEditPage(Model model, Long gradeId) {
         Grade grade = getById(gradeId);
-        GradeDTO gradeDTO = convertGradeToGradeDTO(grade);
+        GradeDTO gradeDTO = new GradeDTO(grade);
         prepareGradePage(model, gradeDTO, null, null, 0, 0);
-    }
-
-    @Override
-    public GradeDTO convertGradeToGradeDTO(Grade grade) {
-        GradeDTO gradeDTO = new GradeDTO();
-
-        gradeDTO.setId(grade.getId());
-        gradeDTO.setGrade(grade.getGrade());
-        gradeDTO.setComment(grade.getComment());
-        gradeDTO.setDate(grade.getDate());
-        gradeDTO.setTeacherId(grade.getTeacher().getId());
-        gradeDTO.setStudentId(grade.getStudent().getId());
-        gradeDTO.setSubjectId(grade.getSubject().getId());
-
-        return gradeDTO;
     }
 
     @Override

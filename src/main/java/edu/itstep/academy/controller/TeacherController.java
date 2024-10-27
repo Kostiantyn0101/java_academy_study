@@ -4,8 +4,7 @@ import edu.itstep.academy.dto.GradeDTO;
 import edu.itstep.academy.entity.Student;
 import edu.itstep.academy.service.GradeService;
 import edu.itstep.academy.service.StudentService;
-import edu.itstep.academy.service.SubjectService;
-import edu.itstep.academy.service.TeacherService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -29,6 +28,14 @@ public class TeacherController {
     public String getStudents(Model model) {
         List<Student> students = studentService.getAll();
         model.addAttribute("students", students);
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+        String password = "frodo";
+
+        String encodedPassword = passwordEncoder.encode(password);
+
+        System.out.println("Закодований пароль darthvader: " + encodedPassword);
         return "students";
     }
 
