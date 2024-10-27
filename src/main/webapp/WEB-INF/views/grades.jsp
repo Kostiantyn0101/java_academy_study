@@ -51,10 +51,17 @@
         </form>
     </div>
 
-    <form method="get" action="/teacher/grades" class="form-inline">
+    <security:authorize access="hasRole('TEACHER')">
+        <c:set var="formAction" value="${pageContext.request.contextPath}/teacher/grades" />
+    </security:authorize>
+    <security:authorize access="hasRole('STUDENT')">
+        <c:set var="formAction" value="${pageContext.request.contextPath}/student/grades" />
+    </security:authorize>
+
+    <form method="get" action="${formAction}" class="form-inline">
         <div class="form-group mb-2">
-            <label class="mr-2">Count elements:</label>
-            <select name="pageSize" class="form-control" onchange="this.form.submit()">
+            <label for="pageSize" class="mr-2">Count elements:</label>
+            <select id="pageSize" name="pageSize" class="form-control" onchange="this.form.submit()">
                 <option value="10" ${pageSize == 10 ? 'selected' : ''}>10</option>
                 <option value="20" ${pageSize == 20 ? 'selected' : ''}>20</option>
                 <option value="50" ${pageSize == 50 ? 'selected' : ''}>50</option>
@@ -101,15 +108,28 @@
         </tbody>
     </table>
 
-    <c:url var="previousUrl" value="/teacher/grades/">
-        <c:param name="page" value="${currentPage - 1}" />
-        <c:param name="pageSize" value="${pageSize}" />
-    </c:url>
+    <security:authorize access="hasRole('TEACHER')">
+        <c:url var="previousUrl" value="/teacher/grades">
+            <c:param name="page" value="${currentPage - 1}" />
+            <c:param name="pageSize" value="${pageSize}" />
+        </c:url>
+        <c:url var="nextUrl" value="/teacher/grades">
+            <c:param name="page" value="${currentPage + 1}" />
+            <c:param name="pageSize" value="${pageSize}" />
+        </c:url>
+    </security:authorize>
 
-    <c:url var="nextUrl" value="/teacher/grades/">
-        <c:param name="page" value="${currentPage + 1}" />
-        <c:param name="pageSize" value="${pageSize}" />
-    </c:url>
+    <security:authorize access="hasRole('STUDENT')">
+        <c:url var="previousUrl" value="/student/grades">
+            <c:param name="page" value="${currentPage - 1}" />
+            <c:param name="pageSize" value="${pageSize}" />
+        </c:url>
+        <c:url var="nextUrl" value="/student/grades">
+            <c:param name="page" value="${currentPage + 1}" />
+            <c:param name="pageSize" value="${pageSize}" />
+        </c:url>
+    </security:authorize>
+
 
     <button class="btn btn-primary" onclick="window.location.href='${previousUrl}'" ${currentPage == 0 ? 'disabled' : ''}>Previous</button>
     <button class="btn btn-primary" onclick="window.location.href='${nextUrl}'">Next</button>
