@@ -35,8 +35,10 @@ public class TeacherController {
     @RequestMapping("/grades")
     public String getGrades(Model model,
                             @RequestParam(required = false) Long subjectId,
-                            @RequestParam(required = false) String dateStr) {
-        gradeService.prepareGradePage(model, new GradeDTO(), subjectId, dateStr);
+                            @RequestParam(required = false) String dateStr,
+                            @RequestParam(defaultValue = "0") int page,
+                            @RequestParam(defaultValue = "10") int pageSize) {
+        gradeService.prepareGradePage(model, new GradeDTO(), subjectId, dateStr, page, pageSize);
         return "grades";
     }
 
@@ -48,7 +50,7 @@ public class TeacherController {
 
     @RequestMapping("/grades/add")
     public String addGrade(Model model) {
-        gradeService.prepareGradePage(model, new GradeDTO(), null, null);
+        gradeService.prepareGradePage(model, new GradeDTO(), null, null, 0, 0);
         return "grade-form";
     }
 

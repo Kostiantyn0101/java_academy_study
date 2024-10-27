@@ -19,8 +19,10 @@ public class StudentController {
     @RequestMapping("/grades")
     public String getGrades(Model model,
                             @RequestParam(required = false) Long subjectId,
-                            @RequestParam(required = false) String dateStr) {
-        gradeService.prepareGradePage(model, new GradeDTO(), subjectId, dateStr);
+                            @RequestParam(required = false) String dateStr,
+                            @RequestParam(defaultValue = "1") int page,
+                            @RequestParam(defaultValue = "10") int pageSize) {
+        gradeService.prepareGradePage(model, new GradeDTO(), subjectId, dateStr, page, pageSize);
         return "grades";
     }
 }

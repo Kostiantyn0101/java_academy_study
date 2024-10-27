@@ -53,81 +53,99 @@ public class GradeRepositoryImpl implements GradeRepository {
 
     @Override
     @Transactional
-    public List<Grade> getByStudentId(Long id) {
+    public List<Grade> getByStudentId(Long id, int page, int pageSize) {
         return sessionFactory.getCurrentSession()
                 .createQuery("FROM Grade g WHERE g.student.id = :studentId", Grade.class)
                 .setParameter("studentId", id)
+                .setFirstResult(page * pageSize)
+                .setMaxResults(pageSize)
                 .getResultList();
     }
 
     @Override
     @Transactional
-    public List<Grade> getByStudentIdAndSubjectId(Long studentId, Long subjectId) {
+    public List<Grade> getByStudentIdAndSubjectId(Long studentId, Long subjectId, int page, int pageSize) {
         return sessionFactory.getCurrentSession()
                 .createQuery("FROM Grade g WHERE g.student.id = :studentId AND g.subject.id = :subjectId", Grade.class)
                 .setParameter("studentId", studentId)
                 .setParameter("subjectId", subjectId)
+                .setFirstResult(page * pageSize)
+                .setMaxResults(pageSize)
                 .getResultList();
     }
 
     @Override
     @Transactional
-    public List<Grade> getByStudentIdAndDate(Long studentId, LocalDate date) {
+    public List<Grade> getByStudentIdAndDate(Long studentId, LocalDate date, int page, int pageSize) {
         return sessionFactory.getCurrentSession()
                 .createQuery("FROM Grade g WHERE g.student.id = :studentId AND g.date = :date", Grade.class)
                 .setParameter("studentId", studentId)
                 .setParameter("date", date)
+                .setFirstResult(page * pageSize)
+                .setMaxResults(pageSize)
                 .getResultList();
     }
 
     @Override
     @Transactional
-    public List<Grade> getByStudentIdAndSubjectIdAndDate(Long studentId, Long subjectId, LocalDate date) {
+    public List<Grade> getByStudentIdAndSubjectIdAndDate(Long studentId, Long subjectId, LocalDate date, int page, int pageSize) {
         return sessionFactory.getCurrentSession()
                 .createQuery("FROM Grade g WHERE g.student.id = :studentId AND g.subject.id = :subjectId AND g.date = :date", Grade.class)
                 .setParameter("studentId", studentId)
                 .setParameter("subjectId", subjectId)
                 .setParameter("date", date)
+                .setFirstResult(page * pageSize)
+                .setMaxResults(pageSize)
                 .getResultList();
     }
 
     @Override
     @Transactional
-    public List<Grade> getByTeacherId(Long id) {
+    public List<Grade> getByTeacherId(Long id, int page, int pageSize) {
         return sessionFactory.getCurrentSession()
                 .createQuery("FROM Grade g WHERE g.teacher.id = :teacherId", Grade.class)
                 .setParameter("teacherId", id)
+                .setFirstResult(page * pageSize)
+                .setMaxResults(pageSize)
+                .setFirstResult(page * pageSize)
+                .setMaxResults(pageSize)
                 .getResultList();
     }
 
     @Override
     @Transactional
-    public List<Grade> getByTeacherIdAndSubjectId(Long teacherId, Long subjectId) {
+    public List<Grade> getByTeacherIdAndSubjectId(Long teacherId, Long subjectId, int page, int pageSize) {
         return sessionFactory.getCurrentSession()
                 .createQuery("FROM Grade g WHERE g.teacher.id = :teacherId AND g.subject.id = :subjectId", Grade.class)
                 .setParameter("teacherId", teacherId)
                 .setParameter("subjectId", subjectId)
+                .setFirstResult(page * pageSize)
+                .setMaxResults(pageSize)
                 .getResultList();
     }
 
     @Override
     @Transactional
-    public List<Grade> getByTeacherIdAndDate(Long teacherId, LocalDate date) {
+    public List<Grade> getByTeacherIdAndDate(Long teacherId, LocalDate date, int page, int pageSize) {
         return sessionFactory.getCurrentSession()
                 .createQuery("FROM Grade g WHERE g.teacher.id = :teacherId AND g.date = :date", Grade.class)
                 .setParameter("teacherId", teacherId)
                 .setParameter("date", date)
+                .setFirstResult(page * pageSize)
+                .setMaxResults(pageSize)
                 .getResultList();
     }
 
     @Override
     @Transactional
-    public List<Grade> getByTeacherIdAndSubjectIdAndDate(Long teacherId, Long subjectId, LocalDate date) {
+    public List<Grade> getByTeacherIdAndSubjectIdAndDate(Long teacherId, Long subjectId, LocalDate date, int page, int pageSize) {
         return sessionFactory.getCurrentSession()
                 .createQuery("FROM Grade g WHERE g.teacher.id = :teacherId AND g.subject.id = :subjectId AND g.date = :date", Grade.class)
                 .setParameter("teacherId", teacherId)
                 .setParameter("subjectId", subjectId)
                 .setParameter("date", date)
+                .setFirstResult(page * pageSize)
+                .setMaxResults(pageSize)
                 .getResultList();
     }
 

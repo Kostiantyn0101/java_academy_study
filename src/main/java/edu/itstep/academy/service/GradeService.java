@@ -17,20 +17,21 @@ public interface GradeService {
     public void update(Grade grade);
     public void deleteById(Long gradeId);
     public void saveGradeDTO(GradeDTO gradeDTO);
-    public List<Grade> getGradesByTeacherId(Long teacherId);
-    public List<Grade> getGradesByTeacherIdAndSubjectId(Long teacherId, Long subjectId);
-    public List<Grade> getGradesByTeacherIdAndDate(Long teacherId, LocalDate date);
-    public List<Grade> getGradesByTeacherIdAndSubjectIdAndDate(Long teacherId, Long subjectId, LocalDate date);
-    public List<Grade> getGradesByStudentId(Long studentId);
-    public List<Grade> getGradesByStudentIdAndSubjectId(Long studentId, Long subjectId);
-    public List<Grade> getGradesByStudentIdAndDate(Long studentId, LocalDate date);
-    public List<Grade> getGradesByStudentIdAndSubjectIdAndDate(Long studentId, Long subjectId, LocalDate date);
-    public void prepareGradePage(Model model, GradeDTO gradeDTO, Long subjectId, String dateStr);
-    public void prepareGradeModel(Model model, List<Grade> grades, List<Student> students,
-                                  List<Subject> subjects, Teacher teacher, GradeDTO gradeDTO,
-                                  String dateStr, Student student);
+
+    public List<Grade> getGradesByTeacherId(Long teacherId, int page, int pageSize);
+    public List<Grade> getGradesByTeacherIdAndSubjectId(Long teacherId, Long subjectId, int page, int pageSize);
+    public List<Grade> getGradesByTeacherIdAndDate(Long teacherId, LocalDate date, int page, int pageSize);
+    public List<Grade> getGradesByTeacherIdAndSubjectIdAndDate(Long teacherId, Long subjectId, LocalDate date, int page, int pageSize);
+    public List<Grade> getGradesByStudentId(Long studentId, int page, int pageSize);
+    public List<Grade> getGradesByStudentIdAndSubjectId(Long studentId, Long subjectId, int page, int pageSize);
+    public List<Grade> getGradesByStudentIdAndDate(Long studentId, LocalDate date, int page, int pageSize);
+    public List<Grade> getGradesByStudentIdAndSubjectIdAndDate(Long studentId, Long subjectId, LocalDate date, int page, int pageSize);
+
+    public void prepareGradePage(Model model, GradeDTO gradeDTO, Long subjectId, String dateStr, int page, int pageSize);
+    public void prepareGradeModel(Model model, List<Grade> grades, List<Student> students, List<Subject> subjects, Teacher teacher,
+                                  GradeDTO gradeDTO, String dateStr, Student student, int page, int pageSize);
     public void prepareEditPage(Model model, Long gradeId);
     public GradeDTO convertGradeToGradeDTO(Grade grade);
-    public List<Grade> getGradesByTeacherIdAndFilters(Long subjectId, String dateStr, Long teacherId);
-    public List<Grade> getGradesByStudentIdAndFilters(Long subjectId, String dateStr, Long studentId);
+    public List<Grade> getGradesByTeacherIdAndFilters(Long subjectId, String dateStr, Long teacherId, int page, int pageSize);
+    public List<Grade> getGradesByStudentIdAndFilters(Long subjectId, String dateStr, Long studentId, int page, int pageSize);
 }

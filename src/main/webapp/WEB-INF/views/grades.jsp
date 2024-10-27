@@ -51,6 +51,18 @@
         </form>
     </div>
 
+    <form method="get" action="/teacher/grades" class="form-inline">
+        <div class="form-group mb-2">
+            <label class="mr-2">Count elements:</label>
+            <select name="pageSize" class="form-control" onchange="this.form.submit()">
+                <option value="10" ${pageSize == 10 ? 'selected' : ''}>10</option>
+                <option value="20" ${pageSize == 20 ? 'selected' : ''}>20</option>
+                <option value="50" ${pageSize == 50 ? 'selected' : ''}>50</option>
+            </select>
+        </div>
+        <input type="hidden" name="page" value="${currentPage}">
+    </form>
+
     <table class="table table-striped table-bordered">
         <thead class="thead-dark">
         <tr>
@@ -88,6 +100,19 @@
         </c:forEach>
         </tbody>
     </table>
+
+    <c:url var="previousUrl" value="/teacher/grades/">
+        <c:param name="page" value="${currentPage - 1}" />
+        <c:param name="pageSize" value="${pageSize}" />
+    </c:url>
+
+    <c:url var="nextUrl" value="/teacher/grades/">
+        <c:param name="page" value="${currentPage + 1}" />
+        <c:param name="pageSize" value="${pageSize}" />
+    </c:url>
+
+    <button class="btn btn-primary" onclick="window.location.href='${previousUrl}'" ${currentPage == 0 ? 'disabled' : ''}>Previous</button>
+    <button class="btn btn-primary" onclick="window.location.href='${nextUrl}'">Next</button>
 
     <security:authorize access="hasRole('TEACHER')">
         <div class="card p-4 mt-4">
