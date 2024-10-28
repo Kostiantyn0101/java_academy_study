@@ -1,6 +1,7 @@
 package edu.itstep.academy.service;
 
-import edu.itstep.academy.dto.GradeDTO;
+import edu.itstep.academy.dto.GradeInDTO;
+import edu.itstep.academy.dto.GradeOutDTO;
 import edu.itstep.academy.entity.*;
 import edu.itstep.academy.repository.GradeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,20 +106,20 @@ public class GradeServiceImpl implements GradeService {
     }
 
     @Override
-    public void saveGradeDTO(GradeDTO gradeDTO) {
+    public void saveGradeDTO(GradeInDTO gradeInDTO) {
         Grade grade = new Grade();
-        grade.setId(gradeDTO.getId());
-        grade.setStudent(studentService.getById(gradeDTO.getStudentId()));
-        grade.setSubject(subjectService.getById(gradeDTO.getSubjectId()));
-        grade.setTeacher(teacherService.getById(gradeDTO.getTeacherId()));
-        grade.setDate(gradeDTO.getDate());
-        grade.setGrade(gradeDTO.getGrade());
-        grade.setComment(gradeDTO.getComment());
+        grade.setId(gradeInDTO.getId());
+        grade.setStudent(studentService.getById(gradeInDTO.getStudentId()));
+        grade.setSubject(subjectService.getById(gradeInDTO.getSubjectId()));
+        grade.setTeacher(teacherService.getById(gradeInDTO.getTeacherId()));
+        grade.setDate(gradeInDTO.getDate());
+        grade.setGrade(gradeInDTO.getGrade());
+        grade.setComment(gradeInDTO.getComment());
         gradeRepository.saveOrUpdate(grade);
     }
 
     @Override
-    public void prepareGradePage(Model model, GradeDTO gradeDTO, Long subjectId, String dateStr,
+    public void prepareGradePage(Model model, GradeOutDTO gradeOutDTO, Long subjectId, String dateStr,
                                  int page, int pageSize) {
         List<Student> students = studentService.getAll();
         List<Subject> subjects = subjectService.getAll();
@@ -126,18 +127,18 @@ public class GradeServiceImpl implements GradeService {
         Teacher teacher = teacherService.getByUserNameId(user.getId());
         if (teacher != null) {
             List<Grade> grades = getGradesByTeacherIdAndFilters(subjectId, dateStr, teacher.getId(), page, pageSize);
-            prepareGradeModel(model, grades, students, subjects, teacher, gradeDTO, dateStr, null, page, pageSize);
+            prepareGradeModel(model, grades, students, subjects, teacher, gradeOutDTO, dateStr, null, page, pageSize);
         }
         else {
             Student student = studentService.getByUserNameId(user.getId());
             List<Grade> grades = getGradesByStudentIdAndFilters(subjectId, dateStr, student.getId(), page, pageSize);
-            prepareGradeModel(model, grades, students, subjects, null, gradeDTO, dateStr, student, page, pageSize);
+            prepareGradeModel(model, grades, students, subjects, null, gradeOutDTO, dateStr, student, page, pageSize);
         }
     }
 
     @Override
     public void prepareGradeModel(Model model, List<Grade> grades, List<Student> students,
-                                  List<Subject> subjects, Teacher teacher, GradeDTO gradeDTO,
+                                  List<Subject> subjects, Teacher teacher, GradeOutDTO gradeOutDTO,
                                   String dateStr, Student student, int page, int pageSize) {
         model.addAttribute("grades", grades);
         model.addAttribute("students", students);
@@ -149,7 +150,7 @@ public class GradeServiceImpl implements GradeService {
         } else {
             model.addAttribute("student", student);
         }
-        model.addAttribute("gradeDTO", gradeDTO);
+        model.addAttribute("gradeOutDTO", gradeOutDTO);
         if (dateStr != null && !dateStr.isEmpty()) {
             model.addAttribute("dateStr", dateStr);
         }
@@ -159,8 +160,8 @@ public class GradeServiceImpl implements GradeService {
     @Override
     public void prepareEditPage(Model model, Long gradeId) {
         Grade grade = getById(gradeId);
-        GradeDTO gradeDTO = new GradeDTO(grade);
-        prepareGradePage(model, gradeDTO, null, null, 0, 0);
+        GradeOutDTO gradeOutDTO = new GradeOutDTO(grade);
+        prepareGradePage(model, gradeOutDTO, null, null, 0, 0);
     }
 
     @Override

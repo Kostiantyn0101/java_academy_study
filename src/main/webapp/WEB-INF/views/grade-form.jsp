@@ -11,15 +11,15 @@
         <div class="text-center">
             <h3 class="mb-4">Grade</h3>
         </div>
-        <form:form action="${pageContext.request.contextPath}/teacher/grades/save" method="post" modelAttribute="gradeDTO" class="border p-4 rounded">
-            <input type="hidden" name="id" value="${gradeDTO.id}"/>
+        <form:form action="${pageContext.request.contextPath}/teacher/grades/save" method="post" modelAttribute="gradeOutDTO" class="border p-4 rounded">
+            <input type="hidden" name="id" value="${gradeOutDTO.id}"/>
             <input type="hidden" name="teacherId" value="${teacher.id}"/>
 
             <div class="form-group">
                 <label for="student">Student:</label>
                 <select id="student" name="studentId" class="form-control">
                     <c:forEach var="student" items="${students}">
-                        <option value="${student.id}" ${student.id == gradeDTO.studentId ? 'selected' : ''}>
+                        <option value="${student.id}" ${student.id == gradeOutDTO.studentId ? 'selected' : ''}>
                                 ${student.firstName} - ${student.lastName}
                         </option>
                     </c:forEach>
@@ -31,7 +31,7 @@
                 <label for="subject">Subject:</label>
                 <select id="subject" name="subjectId" class="form-control">
                     <c:forEach var="subject" items="${subjects}">
-                        <option value="${subject.id}" ${subject.id == gradeDTO.subjectId ? 'selected' : ''}>
+                        <option value="${subject.id}" ${subject.id == gradeOutDTO.subjectId ? 'selected' : ''}>
                                 ${subject.name}
                         </option>
                     </c:forEach>

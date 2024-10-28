@@ -24,11 +24,6 @@ public class StudentRepositoryImpl implements StudentRepository {
     }
 
     @Override
-    public void saveOrUpdate(Student student) {
-
-    }
-
-    @Override
     public void deleteById(Long id) {
 
     }
@@ -44,10 +39,18 @@ public class StudentRepositoryImpl implements StudentRepository {
     @Override
     @Transactional
     public Student getByUsernameId(Long userId) {
-        return (Student) sessionFactory
+        return sessionFactory
                 .getCurrentSession()
                 .createQuery("from Student t where t.user.id = :userId", Student.class)
                 .setParameter("userId", userId)
                 .uniqueResult();
+    }
+
+    @Override
+    @Transactional
+    public void saveOrUpdate(Student student) {
+        sessionFactory
+                .getCurrentSession()
+                .saveOrUpdate(student);
     }
 }

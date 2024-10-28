@@ -20,4 +20,12 @@ public class UserRepositoryImpl implements UserRepository {
                 .setParameter("username", username)
                 .uniqueResult();
     }
+
+    @Override
+    @Transactional
+    public void saveOrUpdate(User user) {
+        sessionFactory
+                .getCurrentSession()
+                .saveOrUpdate(user);
+    }
 }

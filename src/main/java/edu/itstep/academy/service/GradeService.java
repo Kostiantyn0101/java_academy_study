@@ -1,6 +1,7 @@
 package edu.itstep.academy.service;
 
-import edu.itstep.academy.dto.GradeDTO;
+import edu.itstep.academy.dto.GradeInDTO;
+import edu.itstep.academy.dto.GradeOutDTO;
 import edu.itstep.academy.entity.Grade;
 import edu.itstep.academy.entity.Student;
 import edu.itstep.academy.entity.Subject;
@@ -16,7 +17,7 @@ public interface GradeService {
     void add(Grade grade);
     void update(Grade grade);
     void deleteById(Long gradeId);
-    void saveGradeDTO(GradeDTO gradeDTO);
+    void saveGradeDTO(GradeInDTO gradeInDTO);
 
     List<Grade> getGradesByTeacherId(Long teacherId, int page, int pageSize);
     List<Grade> getGradesByTeacherIdAndSubjectId(Long teacherId, Long subjectId, int page, int pageSize);
@@ -27,9 +28,9 @@ public interface GradeService {
     List<Grade> getGradesByStudentIdAndDate(Long studentId, LocalDate date, int page, int pageSize);
     List<Grade> getGradesByStudentIdAndSubjectIdAndDate(Long studentId, Long subjectId, LocalDate date, int page, int pageSize);
 
-    void prepareGradePage(Model model, GradeDTO gradeDTO, Long subjectId, String dateStr, int page, int pageSize);
+    void prepareGradePage(Model model, GradeOutDTO gradeOutDTO, Long subjectId, String dateStr, int page, int pageSize);
     void prepareGradeModel(Model model, List<Grade> grades, List<Student> students, List<Subject> subjects, Teacher teacher,
-                                  GradeDTO gradeDTO, String dateStr, Student student, int page, int pageSize);
+                           GradeOutDTO gradeOutDTO, String dateStr, Student student, int page, int pageSize);
     void prepareEditPage(Model model, Long gradeId);
     List<Grade> getGradesByTeacherIdAndFilters(Long subjectId, String dateStr, Long teacherId, int page, int pageSize);
     List<Grade> getGradesByStudentIdAndFilters(Long subjectId, String dateStr, Long studentId, int page, int pageSize);

@@ -1,10 +1,8 @@
 package edu.itstep.academy.controller;
 
-import edu.itstep.academy.dto.GradeDTO;
-import edu.itstep.academy.entity.Student;
+import edu.itstep.academy.dto.GradeInDTO;
+import edu.itstep.academy.dto.GradeOutDTO;
 import edu.itstep.academy.service.GradeService;
-import edu.itstep.academy.service.StudentService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -19,25 +17,7 @@ import java.util.List;
 public class TeacherController {
 
     @Autowired
-    private StudentService studentService;
-
-    @Autowired
     private GradeService gradeService;
-
-    @RequestMapping("/students")
-    public String getStudents(Model model) {
-        List<Student> students = studentService.getAll();
-        model.addAttribute("students", students);
-
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
-        String password = "frodo";
-
-        String encodedPassword = passwordEncoder.encode(password);
-
-        System.out.println("Закодований пароль darthvader: " + encodedPassword);
-        return "students";
-    }
 
     @RequestMapping("/grades")
     public String getGrades(Model model,
@@ -45,7 +25,7 @@ public class TeacherController {
                             @RequestParam(required = false) String dateStr,
                             @RequestParam(defaultValue = "0") int page,
                             @RequestParam(defaultValue = "10") int pageSize) {
-        gradeService.prepareGradePage(model, new GradeDTO(), subjectId, dateStr, page, pageSize);
+        gradeService.prepareGradePage(model, new GradeOutDTO(), subjectId, dateStr, page, pageSize);
         return "grades";
     }
 
@@ -57,7 +37,7 @@ public class TeacherController {
 
     @RequestMapping("/grades/add")
     public String addGrade(Model model) {
-        gradeService.prepareGradePage(model, new GradeDTO(), null, null, 0, 0);
+        gradeService.prepareGradePage(model, new GradeOutDTO(), null, null, 0, 0);
         return "grade-form";
     }
 
@@ -68,11 +48,11 @@ public class TeacherController {
     }
 
     @PostMapping("/grades/save")
-    public String saveGrade(@Valid @ModelAttribute("gradeDTO") GradeDTO gradeDTO, BindingResult result) {
+    public String saveGrade(@Valid @ModelAttribute("gradeDTO") GradeInDTO gradeInDTO, BindingResult result) {
         if (result.hasErrors()) {
             return "grade-form";
         }
-        gradeService.saveGradeDTO(gradeDTO);
+        gradeService.saveGradeDTO(gradeInDTO);
         return "redirect:/teacher/grades";
     }
 }

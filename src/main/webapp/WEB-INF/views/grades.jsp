@@ -133,8 +133,8 @@
     <security:authorize access="hasRole('TEACHER')">
         <div class="card p-4 mt-4">
             <h3 class="mb-3 text-center">Add New Grade</h3>
-            <form:form action="${pageContext.request.contextPath}/teacher/grades/save" method="post" modelAttribute="gradeDTO">
-                <input type="hidden" name="id" value="${gradeDTO.id}"/>
+            <form:form action="${pageContext.request.contextPath}/teacher/grades/save" method="post" modelAttribute="gradeOutDTO">
+                <input type="hidden" name="id" value="${gradeOutDTO.id}"/>
                 <input type="hidden" name="teacherId" value="${teacher.id}"/>
 
                 <div class="form-group">

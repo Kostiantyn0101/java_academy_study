@@ -1,9 +1,10 @@
 package edu.itstep.academy.service;
 
 import edu.itstep.academy.entity.Teacher;
-import org.springframework.ui.Model;
+
 
 public interface TeacherService {
-    public Teacher getById(Long id);
-    public Teacher getByUserNameId(Long id);
+    Teacher getById(Long id);
+    Teacher getByUserNameId(Long id);
+    void saveOrUpdate(Teacher teacher);
 }

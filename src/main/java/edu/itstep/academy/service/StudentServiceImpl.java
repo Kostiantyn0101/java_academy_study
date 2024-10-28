@@ -1,7 +1,6 @@
 package edu.itstep.academy.service;
 
 import edu.itstep.academy.entity.Student;
-import edu.itstep.academy.entity.Teacher;
 import edu.itstep.academy.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,5 +25,10 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student getByUserNameId(Long id) {
         return studentRepository.getByUsernameId(id);
+    }
+
+    @Override
+    public void saveOrUpdate(Student student) {
+        studentRepository.saveOrUpdate(student);
     }
 }

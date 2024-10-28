@@ -55,10 +55,9 @@ create table grades
     comment     varchar(255),
     date        date not null,
     student_id  bigint not null,
+    teacher_id bigint not null,
     subject_id  bigint not null,
     foreign key (student_id) references students(id),
     foreign key (subject_id) references subjects(id)
 );
 
-alter table grades
-add column teacher_id bigint not null;

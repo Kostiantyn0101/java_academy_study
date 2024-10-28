@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
-public class GradeDTO {
+public class GradeOutDTO {
     private Long id;
     private Long studentId;
     private Long subjectId;
@@ -19,7 +19,7 @@ public class GradeDTO {
     private int grade;
     private String comment;
 
-    public GradeDTO(Grade grade)
+    public GradeOutDTO(Grade grade)
     {
         this.id = grade.getId();
         this.studentId = grade.getStudent().getId();

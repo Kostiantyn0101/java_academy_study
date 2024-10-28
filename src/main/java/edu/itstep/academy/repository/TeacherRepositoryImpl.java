@@ -23,10 +23,18 @@ public class TeacherRepositoryImpl implements TeacherRepository {
     @Override
     @Transactional
     public Teacher getByUsernameId(Long userId) {
-        return (Teacher) sessionFactory
+        return sessionFactory
                 .getCurrentSession()
                 .createQuery("from Teacher t where t.user.id = :userId", Teacher.class)
                 .setParameter("userId", userId)
                 .uniqueResult();
+    }
+
+    @Override
+    @Transactional
+    public void saveOrUpdate(Teacher teacher) {
+        sessionFactory
+                .getCurrentSession()
+                .saveOrUpdate(teacher);
     }
 }
