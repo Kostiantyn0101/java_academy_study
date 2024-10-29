@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Welcome</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 </head>
 <body>
 <div class="container text-center mt-5">
@@ -20,6 +20,9 @@
         </security:authorize>
         <security:authorize access="hasRole('TEACHER')">
             <a href="${pageContext.request.contextPath}/teacher/grades" class="btn btn-success btn-lg">Go to Teacher Page</a>
+        </security:authorize>
+        <security:authorize access="hasRole('ADMIN')">
+            <a href="${pageContext.request.contextPath}/admin/register" class="btn btn-danger btn-lg">Go to ADMIN Page</a>
         </security:authorize>
     </div>
 </div>

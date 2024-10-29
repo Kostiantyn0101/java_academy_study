@@ -1,5 +1,6 @@
 package edu.itstep.academy.service;
 
+import edu.itstep.academy.dto.UserRegistrationInDTO;
 import edu.itstep.academy.entity.*;
 import edu.itstep.academy.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,22 +31,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void registerUser(String username, String password, Long roleId, String firstName, String lastName) {
+    public void registerUser(UserRegistrationInDTO userRegistrationInDTO) {
         User user = new User();
-        user.setUsername(username);
-        user.setPassword(passwordEncoder.encode(password));
+        user.setUsername(userRegistrationInDTO.getUsername());
+        user.setPassword(passwordEncoder.encode(userRegistrationInDTO.getPassword()));
         user.setEnabled(true);
         saveOrUpdate(user);
 
-//        RoleName roleName = new RoleName();
-//        roleName.setName(role);
-//        roleNameService.saveOrUpdate(roleName);
-
-        RoleName roleName = roleNameService.getRoleNameById(roleId);
+        RoleName roleName = roleNameService.getRoleNameById(userRegistrationInDTO.getRoleId());
 
         RoleRoleNameId roleRoleNameId = new RoleRoleNameId();
         roleRoleNameId.setUserId(user.getId());
-        roleRoleNameId.setRoleId(roleId);
+        roleRoleNameId.setRoleId(userRegistrationInDTO.getRoleId());
 
         Role roleEntity = new Role();
         roleEntity.setId(roleRoleNameId);
@@ -56,14 +53,14 @@ public class UserServiceImpl implements UserService {
 
         if ("role_teacher".equalsIgnoreCase(roleName.getName())) {
             Teacher teacher = new Teacher();
-            teacher.setFirstName(firstName);
-            teacher.setLastName(lastName);
+            teacher.setFirstName(userRegistrationInDTO.getFirstName());
+            teacher.setLastName(userRegistrationInDTO.getLastName());
             teacher.setUser(user);
             teacherService.saveOrUpdate(teacher);
         } else if ("role_student".equalsIgnoreCase(roleName.getName())) {
             Student student = new Student();
-            student.setFirstName(firstName);
-            student.setLastName(lastName);
+            student.setFirstName(userRegistrationInDTO.getFirstName());
+            student.setLastName(userRegistrationInDTO.getLastName());
             student.setUser(user);
             studentService.saveOrUpdate(student);
         }

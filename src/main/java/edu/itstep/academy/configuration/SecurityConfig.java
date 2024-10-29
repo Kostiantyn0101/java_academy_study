@@ -22,16 +22,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .anyRequest().permitAll()
-//                .antMatchers("/student/**").hasRole("STUDENT")
-//                .antMatchers("/teacher/**").hasRole("TEACHER")
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/student/**").hasRole("STUDENT")
+                .antMatchers("/teacher/**").hasRole("TEACHER")
                 .and()
                 .formLogin()
                 .permitAll();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -44,8 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .usersByUsernameQuery("select username, password, enabled from users where username = ?")
                 .authoritiesByUsernameQuery(
                         "select u.username, r.role from users u " +
-                            "join roles ur on u.id = ur.user_id " +
-                            "join role_names r on ur.role_id = r.id " +
+                                "join roles ur on u.id = ur.user_id " +
+                                "join role_names r on ur.role_id = r.id " +
                                 "where u.username = ?");
     }
 }

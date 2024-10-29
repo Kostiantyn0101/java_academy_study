@@ -1,6 +1,7 @@
 insert into role_names (role)
 values ('ROLE_TEACHER'),
-       ('ROLE_STUDENT');
+       ('ROLE_STUDENT'),
+       ('ROLE_ADMIN');
 
 insert into users (username, password, enabled)
 values ('obiwan', 'obiwan', true),

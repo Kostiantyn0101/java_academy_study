@@ -42,7 +42,9 @@ public class GradeServiceImpl implements GradeService {
 
     @Override
     public Grade getById(Long id) {
-        return gradeRepository.getById(id);
+        return gradeRepository
+                .getById(id);
+                //.orElseThrow(() -> new GradeNotFoundException(id));
     }
 
     @Override
@@ -140,6 +142,7 @@ public class GradeServiceImpl implements GradeService {
     public void prepareGradeModel(Model model, List<Grade> grades, List<Student> students,
                                   List<Subject> subjects, Teacher teacher, GradeOutDTO gradeOutDTO,
                                   String dateStr, Student student, int page, int pageSize) {
+
         model.addAttribute("grades", grades);
         model.addAttribute("students", students);
         model.addAttribute("subjects", subjects);

@@ -6,7 +6,7 @@
 <html>
 <head>
     <title>Students Grades</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="container mt-5">
@@ -32,9 +32,10 @@
 
     <div class="card p-4 mb-4">
         <h3 class="mb-3">Filter Grades</h3>
-        <form action="${formAction}" method="get">
-                <div class="form-group">
-                    <label for="subject_filter">Subject:</label>
+        <form:form action="${formAction}" method="get">
+            <div class="row g-2 align-items-center">
+                <div class="col-md-4">
+                    <label for="subject_filter" class="form-label">Subject:</label>
                     <select id="subject_filter" name="subjectId" class="form-control">
                         <option value="">All</option>
                         <c:forEach var="subject" items="${subjects}">
@@ -45,90 +46,101 @@
                     </select>
                 </div>
 
-                <div class="form-group">
-                    <label for="date_filter">Date:</label>
+                <div class="col-md-4">
+                    <label for="date_filter" class="form-label">Date:</label>
                     <input type="date" id="date_filter" name="dateStr" value="${dateStr}" class="form-control"/>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-block">Filter</button>
-        </form>
+                <div class="col-md-4">
+                    <label class="form-label" style="visibility: hidden;">Filter</label>
+                    <button type="submit" class="btn btn-primary w-100">Filter</button>
+                </div>
+            </div>
+        </form:form>
     </div>
 
-    <form method="get" action="${formAction}" class="form-inline">
-        <div class="form-group mb-2">
+    <form:form method="get" action="${formAction}" class="form-inline">
+        <div class="form-group mb-2 d-flex align-items-center">
             <label for="pageSize" class="mr-2">Count elements:</label>
-            <select id="pageSize" name="pageSize" class="form-control" onchange="this.form.submit()">
+            <select id="pageSize" name="pageSize" class="form-control" onchange="this.form.submit()" style="width: auto;">
                 <option value="10" ${pageSize == 10 ? 'selected' : ''}>10</option>
                 <option value="20" ${pageSize == 20 ? 'selected' : ''}>20</option>
                 <option value="50" ${pageSize == 50 ? 'selected' : ''}>50</option>
             </select>
         </div>
         <input type="hidden" name="page" value="${currentPage}">
-    </form>
+    </form:form>
 
-    <table class="table table-striped table-bordered">
-        <thead class="thead-dark">
-        <tr>
-            <th>Student</th>
-            <th>Subject</th>
-            <th>Date</th>
-            <th>Grade</th>
-            <th>Comment</th>
-            <security:authorize access="hasRole('TEACHER')">
-                <th>Actions</th>
-            </security:authorize>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach var="grade" items="${grades}">
-            <c:url var="editButton" value="/teacher/grades/edit/">
-                <c:param name="id" value="${grade.id}"/>
-            </c:url>
-            <c:url var="deleteButton" value="/teacher/grades/delete/">
-                <c:param name="id" value="${grade.id}"/>
-            </c:url>
-            <tr>
-                <td>${grade.student.firstName} - ${grade.student.lastName}</td>
-                <td>${grade.subject.name}</td>
-                <td>${grade.date}</td>
-                <td>${grade.grade}</td>
-                <td>${grade.comment}</td>
+    <div class="container mt-4">
+        <h2>Grades List</h2>
+            <ul class="list-group">
+                <c:if test="${empty grades}">
+                    <li class="list-group-item text-center">
+                        <strong>No grades yet</strong>
+                    </li>
+                </c:if>
+                <c:forEach var="grade" items="${grades}">
+                    <c:url var="editButton" value="/teacher/grades/edit/">
+                        <c:param name="id" value="${grade.id}"/>
+                    </c:url>
+                    <c:url var="deleteButton" value="/teacher/grades/delete/">
+                        <c:param name="id" value="${grade.id}"/>
+                    </c:url>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <strong>Student:</strong> ${grade.student.firstName} ${grade.student.lastName}
+                            </div>
+                            <div class="col-md-2">
+                                <strong>Subject:</strong> ${grade.subject.name}
+                            </div>
+                            <div class="col-md-2">
+                                <strong>Date:</strong> ${grade.date}
+                            </div>
+                            <div class="col-md-1">
+                                <strong>Grade:</strong> ${grade.grade}
+                            </div>
+                            <div class="col-md-2">
+                                <strong>Comment:</strong> ${grade.comment}
+                            </div>
+                            <div class="col-md-2">
+                                <security:authorize access="hasRole('TEACHER')">
+                                        <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='${editButton}'">Edit</button>
+                                        <button type="button" class="btn btn-danger btn-sm" onclick="window.location.href='${deleteButton}'">Delete</button>
+                                </security:authorize>
+                                <security:authorize access="hasRole('STUDENT')">
+                                        <strong>Teacher:</strong> ${grade.teacher.firstName} ${grade.teacher.lastName}
+                                </security:authorize>
+                            </div>
+                        </div>
+                    </li>
+                </c:forEach>
+            </ul>
                 <security:authorize access="hasRole('TEACHER')">
-                    <td>
-                        <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='${editButton}'">Edit</button>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="window.location.href='${deleteButton}'">Delete</button>
-                    </td>
+                    <c:url var="previousUrl" value="/teacher/grades">
+                        <c:param name="page" value="${currentPage - 1}" />
+                        <c:param name="pageSize" value="${pageSize}" />
+                    </c:url>
+                    <c:url var="nextUrl" value="/teacher/grades">
+                        <c:param name="page" value="${currentPage + 1}" />
+                        <c:param name="pageSize" value="${pageSize}" />
+                    </c:url>
                 </security:authorize>
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
-
-    <security:authorize access="hasRole('TEACHER')">
-        <c:url var="previousUrl" value="/teacher/grades">
-            <c:param name="page" value="${currentPage - 1}" />
-            <c:param name="pageSize" value="${pageSize}" />
-        </c:url>
-        <c:url var="nextUrl" value="/teacher/grades">
-            <c:param name="page" value="${currentPage + 1}" />
-            <c:param name="pageSize" value="${pageSize}" />
-        </c:url>
-    </security:authorize>
-
-    <security:authorize access="hasRole('STUDENT')">
-        <c:url var="previousUrl" value="/student/grades">
-            <c:param name="page" value="${currentPage - 1}" />
-            <c:param name="pageSize" value="${pageSize}" />
-        </c:url>
-        <c:url var="nextUrl" value="/student/grades">
-            <c:param name="page" value="${currentPage + 1}" />
-            <c:param name="pageSize" value="${pageSize}" />
-        </c:url>
-    </security:authorize>
-
-
-    <button class="btn btn-primary" onclick="window.location.href='${previousUrl}'" ${currentPage == 0 ? 'disabled' : ''}>Previous</button>
-    <button class="btn btn-primary" onclick="window.location.href='${nextUrl}'">Next</button>
+                <security:authorize access="hasRole('STUDENT')">
+                    <c:url var="previousUrl" value="/student/grades">
+                        <c:param name="page" value="${currentPage - 1}" />
+                        <c:param name="pageSize" value="${pageSize}" />
+                    </c:url>
+                    <c:url var="nextUrl" value="/student/grades">
+                        <c:param name="page" value="${currentPage + 1}" />
+                        <c:param name="pageSize" value="${pageSize}" />
+                    </c:url>
+                </security:authorize>
+            <div>
+                <button class="btn btn-primary" onclick="window.location.href='${previousUrl}'" ${currentPage == 0 ? 'disabled' : ''}>Previous</button>
+                <button class="btn btn-primary" onclick="window.location.href='${nextUrl}'">Next</button>
+            </div>
+    </div>
 
     <security:authorize access="hasRole('TEACHER')">
         <div class="card p-4 mt-4">
