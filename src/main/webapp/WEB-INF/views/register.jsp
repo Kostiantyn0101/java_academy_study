@@ -19,9 +19,9 @@
     <input type="text" id="lastName" name="lastName" required>
     <br>
     <label for="role">Role:</label>
-    <select id="role" name="role" required>
-        <option value="teacher">Teacher</option>
-        <option value="student">Student</option>
+    <select id="role" name="roleId" required>
+        <option value="2">Student</option>
+        <option value="1">Teacher</option>
     </select>
     <br><br>
     <button type="submit">Register</button>

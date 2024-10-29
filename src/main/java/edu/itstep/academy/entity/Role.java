@@ -9,7 +9,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Role {
     @EmbeddedId
-    private RoleId id;
+    private RoleRoleNameId id;
 
     @ManyToOne
     @MapsId("userId")

@@ -30,9 +30,9 @@ public class AdminController {
             @RequestParam String password,
             @RequestParam String firstName,
             @RequestParam String lastName,
-            @RequestParam String role
+            @RequestParam Long roleId
     ) {
-        userService.registerUser(username, password, role, firstName, lastName);
+        userService.registerUser(username, password, roleId, firstName, lastName);
         return "redirect:/admin/success";
     }
 

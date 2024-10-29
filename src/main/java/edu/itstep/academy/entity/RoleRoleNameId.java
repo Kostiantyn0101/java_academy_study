@@ -10,7 +10,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Data
-public class RoleId implements Serializable {
+public class RoleRoleNameId implements Serializable {
     private Long userId;
     private Long roleId;
 

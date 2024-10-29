@@ -1,8 +1,6 @@
 package edu.itstep.academy.service;
 
-import edu.itstep.academy.entity.Student;
-import edu.itstep.academy.entity.Teacher;
-import edu.itstep.academy.entity.User;
+import edu.itstep.academy.entity.*;
 import edu.itstep.academy.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -20,7 +18,11 @@ public class UserServiceImpl implements UserService {
     private TeacherService teacherService;
     @Autowired
     private StudentService studentService;
-    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    private RoleNameService roleNameService;
+    @Autowired
+    private RoleService roleService;
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
     public void saveOrUpdate(User user) {
@@ -28,21 +30,37 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void registerUser(String username, String password, String role, String firstName, String lastName) {
+    public void registerUser(String username, String password, Long roleId, String firstName, String lastName) {
         User user = new User();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         user.setEnabled(true);
-
         saveOrUpdate(user);
 
-        if ("teacher".equalsIgnoreCase(role)) {
+//        RoleName roleName = new RoleName();
+//        roleName.setName(role);
+//        roleNameService.saveOrUpdate(roleName);
+
+        RoleName roleName = roleNameService.getRoleNameById(roleId);
+
+        RoleRoleNameId roleRoleNameId = new RoleRoleNameId();
+        roleRoleNameId.setUserId(user.getId());
+        roleRoleNameId.setRoleId(roleId);
+
+        Role roleEntity = new Role();
+        roleEntity.setId(roleRoleNameId);
+        roleEntity.setUser(user);
+        roleEntity.setRoleName(roleName);
+        roleService.saveOrUpdate(roleEntity);
+
+
+        if ("role_teacher".equalsIgnoreCase(roleName.getName())) {
             Teacher teacher = new Teacher();
             teacher.setFirstName(firstName);
             teacher.setLastName(lastName);
             teacher.setUser(user);
             teacherService.saveOrUpdate(teacher);
-        } else if ("student".equalsIgnoreCase(role)) {
+        } else if ("role_student".equalsIgnoreCase(roleName.getName())) {
             Student student = new Student();
             student.setFirstName(firstName);
             student.setLastName(lastName);
