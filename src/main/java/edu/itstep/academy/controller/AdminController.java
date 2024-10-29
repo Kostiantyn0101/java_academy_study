@@ -16,8 +16,10 @@ public class AdminController {
     private UserService userService;
 
     @GetMapping("/register")
-    public String showRegistrationForm(Model model) {
-        model.addAttribute("userRegistrationDTO", new UserRegistrationInDTO());
+    public String showRegistrationForm(Model model,
+                                       @RequestParam(defaultValue = "0") int page,
+                                       @RequestParam(defaultValue = "10") int pageSize) {
+        userService.prepareRegisterPage(model, new UserRegistrationInDTO(), page, pageSize);
         return "register-form";
     }
 

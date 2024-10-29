@@ -71,8 +71,6 @@ public class GradeServiceImpl implements GradeService {
         return gradeRepository.getByStudentIdAndSubjectIdAndDate(studentId, subjectId, date, page, pageSize);
     }
 
-
-
     @Override
     public List<Grade> getGradesByTeacherId(Long teacherId,
                                             int page, int pageSize) {

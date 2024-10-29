@@ -1,5 +1,6 @@
 package edu.itstep.academy.service;
 
+import edu.itstep.academy.dto.UserOutDTO;
 import edu.itstep.academy.dto.UserRegistrationInDTO;
 import edu.itstep.academy.entity.*;
 import edu.itstep.academy.repository.UserRepository;
@@ -9,6 +10,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -31,9 +36,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getAll(){
+        return userRepository.getAll();
+    }
+    @Override
     public void registerUser(UserRegistrationInDTO userRegistrationInDTO) {
         User user = new User();
-        user.setUsername(userRegistrationInDTO.getUsername());
+        user.setUsername(userRegistrationInDTO.getUserName());
         user.setPassword(passwordEncoder.encode(userRegistrationInDTO.getPassword()));
         user.setEnabled(true);
         saveOrUpdate(user);
@@ -66,7 +75,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
     @Override
     public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -78,4 +86,40 @@ public class UserServiceImpl implements UserService {
         }
         return userRepository.getUserByUsername(username);
     }
+
+    @Override
+    public void prepareRegisterPage(Model model, UserRegistrationInDTO userRegistrationInDTO, int page, int pageSize) {
+        List<User> users = getAll();
+
+        List<UserOutDTO> userDTOs = users.stream()
+                .map(this::convertToUserOutDTO).toList();
+
+        model.addAttribute("userRegistrationInDTO", userRegistrationInDTO);
+        model.addAttribute("userDTOs", userDTOs);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("pageSize", pageSize);
+    }
+
+    private UserOutDTO convertToUserOutDTO(User user) {
+        UserOutDTO dto = new UserOutDTO();
+        dto.setUserId(user.getId());
+        dto.setUserName(user.getUsername());
+
+        List<Role> roles = roleService.getByUserId(user.getId());
+        List<RoleName> roleNames = new ArrayList<>();
+        for (Role role : roles) {
+            roleNames.add(role.getRoleName());
+        }
+        dto.setRoles(roleNames);
+
+        if (user.getTeacher() != null) {
+            dto.setFirstName(user.getTeacher().getFirstName());
+            dto.setLastName(user.getTeacher().getLastName());
+        } else if (user.getStudent() != null) {
+            dto.setFirstName(user.getStudent().getFirstName());
+            dto.setLastName(user.getStudent().getLastName());
+        }
+        return dto;
+    }
+
 }

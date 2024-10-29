@@ -28,8 +28,6 @@
         <c:set var="formAction" value="${pageContext.request.contextPath}/student/grades" />
     </security:authorize>
 
-
-
     <div class="card p-4 mb-4">
         <h3 class="mb-3">Filter Grades</h3>
         <form:form action="${formAction}" method="get">

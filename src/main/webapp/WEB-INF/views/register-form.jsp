@@ -7,15 +7,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<div class="container mt-5">
-    <div class="text-center">
-        <h3 class="mb-4">User Registration</h3>
-    </div>
-    <form:form action="${pageContext.request.contextPath}/admin/register" method="post" modelAttribute="userRegistrationDTO" class="border p-4 rounded">
+<div class="container mt-4">
+    <h2>Register User</h2>
+    <form:form action="${pageContext.request.contextPath}/admin/register" method="post" modelAttribute="userRegistrationInDTO" class="border p-4 rounded">
         <div class="form-group">
-            <label for="username">Username:</label>
-            <form:input type="text" path="username" id="username" class="form-control" required="true"/>
-            <form:errors path="username" cssClass="text-danger"/>
+            <label for="userName">Username:</label>
+            <form:input type="text" path="userName" id="username" class="form-control" required="true"/>
+            <form:errors path="userName" cssClass="text-danger"/>
         </div>
 
         <div class="form-group">
@@ -49,6 +47,35 @@
             <button type="submit" class="btn btn-primary btn-lg w-50">Register</button>
         </div>
     </form:form>
+
+    <h2 class="mt-5">Registered Users</h2>
+    <ul class="list-group">
+        <c:if test="${empty userDTOs}">
+            <li class="list-group-item text-center">
+                <strong>No registered users yet</strong>
+            </li>
+        </c:if>
+        <c:forEach var="user" items="${userDTOs}">
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-md-3">
+                        <strong>Username:</strong> ${user.userName}
+                    </div>
+                    <div class="col-md-3">
+                        <strong>Name:</strong> ${user.firstName} ${user.lastName}
+                    </div>
+                    <div class="col-md-3">
+                        <strong>Roles:</strong>
+                        <c:forEach var="roleName" items="${user.roles}" varStatus="status">
+                            ${roleName.name} <c:if test="${!status.last}">, </c:if>
+                        </c:forEach>
+                    </div>
+                </div>
+            </li>
+        </c:forEach>
+    </ul>
 </div>
+
+
 </body>
 </html>

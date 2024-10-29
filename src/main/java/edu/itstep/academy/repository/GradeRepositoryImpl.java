@@ -54,7 +54,8 @@ public class GradeRepositoryImpl implements GradeRepository {
     @Override
     @Transactional
     public List<Grade> getByStudentId(Long id, int page, int pageSize) {
-        return sessionFactory.getCurrentSession()
+        return sessionFactory
+                .getCurrentSession()
                 .createQuery("FROM Grade g WHERE g.student.id = :studentId", Grade.class)
                 .setParameter("studentId", id)
                 .setFirstResult(page * pageSize)
