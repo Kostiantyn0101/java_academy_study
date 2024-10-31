@@ -2,6 +2,8 @@ package edu.itstep.academy.service;
 
 import edu.itstep.academy.dto.GradeInDTO;
 import edu.itstep.academy.dto.GradeOutDTO;
+import edu.itstep.academy.dto.StudentOutDTO;
+import edu.itstep.academy.dto.SubjectOutDTO;
 import edu.itstep.academy.entity.*;
 import edu.itstep.academy.repository.GradeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +46,6 @@ public class GradeServiceImpl implements GradeService {
     public Grade getById(Long id) {
         return gradeRepository
                 .getById(id);
-                //.orElseThrow(() -> new GradeNotFoundException(id));
     }
 
     @Override
@@ -122,25 +123,42 @@ public class GradeServiceImpl implements GradeService {
     public void prepareGradePage(Model model, GradeOutDTO gradeOutDTO, Long subjectId, String dateStr,
                                  int page, int pageSize) {
         List<Student> students = studentService.getAll();
+        List<StudentOutDTO> studentOutDTOS = students
+                .stream()
+                .map(StudentOutDTO::new)
+                .toList();
+
         List<Subject> subjects = subjectService.getAll();
+        List<SubjectOutDTO> subjectOutDTOS = subjects
+                .stream()
+                .map(SubjectOutDTO::new)
+                .toList();
+
         User user = userService.getCurrentUser();
         Teacher teacher = teacherService.getByUserNameId(user.getId());
         if (teacher != null) {
-            List<Grade> grades = getGradesByTeacherIdAndFilters(subjectId, dateStr, teacher.getId(), page, pageSize);
-            prepareGradeModel(model, grades, students, subjects, teacher, gradeOutDTO, dateStr, null, page, pageSize);
+            List<GradeOutDTO> grades = getGradesByTeacherIdAndFilters(subjectId, dateStr, teacher.getId(), page, pageSize)
+                    .stream()
+                    .map(GradeOutDTO::new)
+                    .toList();
+            prepareGradeModel(model, grades, studentOutDTOS, subjectOutDTOS, teacher, gradeOutDTO, dateStr, null, page, pageSize);
         }
         else {
             Student student = studentService.getByUserNameId(user.getId());
-            List<Grade> grades = getGradesByStudentIdAndFilters(subjectId, dateStr, student.getId(), page, pageSize);
-            prepareGradeModel(model, grades, students, subjects, null, gradeOutDTO, dateStr, student, page, pageSize);
+            List<GradeOutDTO> grades = getGradesByStudentIdAndFilters(subjectId, dateStr, student.getId(), page, pageSize)
+                    .stream()
+                    .map(GradeOutDTO::new)
+                    .toList();
+
+            prepareGradeModel(model, grades, studentOutDTOS, subjectOutDTOS, null, gradeOutDTO, dateStr, student, page, pageSize);
         }
     }
 
     @Override
-    public void prepareGradeModel(Model model, List<Grade> grades, List<Student> students,
-                                  List<Subject> subjects, Teacher teacher, GradeOutDTO gradeOutDTO,
+    public void prepareGradeModel(Model model, List<GradeOutDTO> grades, List<StudentOutDTO> students,
+                                  List<SubjectOutDTO> subjects, Teacher teacher, GradeOutDTO gradeOutDTO,
                                   String dateStr, Student student, int page, int pageSize) {
-
+//prepare teacher and student dto
         model.addAttribute("grades", grades);
         model.addAttribute("students", students);
         model.addAttribute("subjects", subjects);

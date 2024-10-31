@@ -36,42 +36,43 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAll(){
+    public List<User> getAll() {
         return userRepository.getAll();
     }
+
     @Override
     public void registerUser(UserRegistrationInDTO userRegistrationInDTO) {
-        User user = new User();
-        user.setUsername(userRegistrationInDTO.getUserName());
-        user.setPassword(passwordEncoder.encode(userRegistrationInDTO.getPassword()));
-        user.setEnabled(true);
-        saveOrUpdate(user);
+        if (userRegistrationInDTO.getRoleId() != 3) {
+            User user = new User();
+            user.setUsername(userRegistrationInDTO.getUserName());
+            user.setPassword(passwordEncoder.encode(userRegistrationInDTO.getPassword()));
+            user.setEnabled(true);
+            saveOrUpdate(user);
 
-        RoleName roleName = roleNameService.getRoleNameById(userRegistrationInDTO.getRoleId());
+            RoleName roleName = roleNameService.getRoleNameById(userRegistrationInDTO.getRoleId());
 
-        RoleRoleNameId roleRoleNameId = new RoleRoleNameId();
-        roleRoleNameId.setUserId(user.getId());
-        roleRoleNameId.setRoleId(userRegistrationInDTO.getRoleId());
+            RoleRoleNameId roleRoleNameId = new RoleRoleNameId();
+            roleRoleNameId.setUserId(user.getId());
+            roleRoleNameId.setRoleId(userRegistrationInDTO.getRoleId());
 
-        Role roleEntity = new Role();
-        roleEntity.setId(roleRoleNameId);
-        roleEntity.setUser(user);
-        roleEntity.setRoleName(roleName);
-        roleService.saveOrUpdate(roleEntity);
-
-
-        if ("role_teacher".equalsIgnoreCase(roleName.getName())) {
-            Teacher teacher = new Teacher();
-            teacher.setFirstName(userRegistrationInDTO.getFirstName());
-            teacher.setLastName(userRegistrationInDTO.getLastName());
-            teacher.setUser(user);
-            teacherService.saveOrUpdate(teacher);
-        } else if ("role_student".equalsIgnoreCase(roleName.getName())) {
-            Student student = new Student();
-            student.setFirstName(userRegistrationInDTO.getFirstName());
-            student.setLastName(userRegistrationInDTO.getLastName());
-            student.setUser(user);
-            studentService.saveOrUpdate(student);
+            Role roleEntity = new Role();
+            roleEntity.setId(roleRoleNameId);
+            roleEntity.setUser(user);
+            roleEntity.setRoleName(roleName);
+            roleService.saveOrUpdate(roleEntity);
+            if ("role_teacher".equalsIgnoreCase(roleName.getName())) {
+                Teacher teacher = new Teacher();
+                teacher.setFirstName(userRegistrationInDTO.getFirstName());
+                teacher.setLastName(userRegistrationInDTO.getLastName());
+                teacher.setUser(user);
+                teacherService.saveOrUpdate(teacher);
+            } else if ("role_student".equalsIgnoreCase(roleName.getName())) {
+                Student student = new Student();
+                student.setFirstName(userRegistrationInDTO.getFirstName());
+                student.setLastName(userRegistrationInDTO.getLastName());
+                student.setUser(user);
+                studentService.saveOrUpdate(student);
+            }
         }
     }
 

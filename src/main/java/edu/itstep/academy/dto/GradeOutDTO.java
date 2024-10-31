@@ -1,6 +1,9 @@
 package edu.itstep.academy.dto;
 
 import edu.itstep.academy.entity.Grade;
+import edu.itstep.academy.entity.Student;
+import edu.itstep.academy.entity.Subject;
+import edu.itstep.academy.entity.Teacher;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -18,6 +21,10 @@ public class GradeOutDTO {
     private LocalDate date;
     private int grade;
     private String comment;
+    private Teacher teacher;
+    private Student student;
+    private Subject subject;
+
 
     public GradeOutDTO(Grade grade)
     {
@@ -28,5 +35,8 @@ public class GradeOutDTO {
         this.date = grade.getDate();
         this.grade = grade.getGrade();
         this.comment = grade.getComment();
+        this.teacher = grade.getTeacher();
+        this.student = grade.getStudent();
+        this.subject = grade.getSubject();
     }
 }

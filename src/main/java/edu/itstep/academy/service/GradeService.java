@@ -2,6 +2,8 @@ package edu.itstep.academy.service;
 
 import edu.itstep.academy.dto.GradeInDTO;
 import edu.itstep.academy.dto.GradeOutDTO;
+import edu.itstep.academy.dto.StudentOutDTO;
+import edu.itstep.academy.dto.SubjectOutDTO;
 import edu.itstep.academy.entity.Grade;
 import edu.itstep.academy.entity.Student;
 import edu.itstep.academy.entity.Subject;
@@ -29,7 +31,7 @@ public interface GradeService {
     List<Grade> getGradesByStudentIdAndSubjectIdAndDate(Long studentId, Long subjectId, LocalDate date, int page, int pageSize);
 
     void prepareGradePage(Model model, GradeOutDTO gradeOutDTO, Long subjectId, String dateStr, int page, int pageSize);
-    void prepareGradeModel(Model model, List<Grade> grades, List<Student> students, List<Subject> subjects, Teacher teacher,
+    void prepareGradeModel(Model model, List<GradeOutDTO> grades, List<StudentOutDTO> students, List<SubjectOutDTO> subjects, Teacher teacher,
                            GradeOutDTO gradeOutDTO, String dateStr, Student student, int page, int pageSize);
     void prepareEditPage(Model model, Long gradeId);
     List<Grade> getGradesByTeacherIdAndFilters(Long subjectId, String dateStr, Long teacherId, int page, int pageSize);
