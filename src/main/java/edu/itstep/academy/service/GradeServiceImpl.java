@@ -2,6 +2,7 @@ package edu.itstep.academy.service;
 
 import edu.itstep.academy.dto.*;
 import edu.itstep.academy.entity.*;
+import edu.itstep.academy.exeption.GradeNotFoundException;
 import edu.itstep.academy.mapper.*;
 import edu.itstep.academy.repository.GradeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -210,6 +211,10 @@ public class GradeServiceImpl implements GradeService {
     @Override
     public void prepareEditPage(Model model, Long gradeId) {
         Grade grade = getById(gradeId);
+        if (grade == null)
+        {
+            throw new GradeNotFoundException(gradeId);
+        }
         GradeOutDTO gradeOutDTO = gradeMapper.toOutDTO(grade);
         prepareGradePage(model, gradeOutDTO, null, null, 0, 0);
     }
