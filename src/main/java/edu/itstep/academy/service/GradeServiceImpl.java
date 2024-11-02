@@ -1,14 +1,13 @@
 package edu.itstep.academy.service;
 
-import edu.itstep.academy.dto.GradeInDTO;
-import edu.itstep.academy.dto.GradeOutDTO;
-import edu.itstep.academy.dto.StudentOutDTO;
-import edu.itstep.academy.dto.SubjectOutDTO;
+import edu.itstep.academy.dto.*;
 import edu.itstep.academy.entity.*;
+import edu.itstep.academy.mapper.*;
 import edu.itstep.academy.repository.GradeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -16,6 +15,18 @@ import java.util.List;
 
 @Service
 public class GradeServiceImpl implements GradeService {
+
+    @Autowired
+    GradeMapper gradeMapper;
+
+    @Autowired
+    StudentMapper studentMapper;
+
+    @Autowired
+    TeacherMapper teacherMapper;
+
+    @Autowired
+    SubjectMapper subjectMapper;
 
     @Autowired
     private GradeRepository gradeRepository;
@@ -108,14 +119,10 @@ public class GradeServiceImpl implements GradeService {
 
     @Override
     public void saveGradeDTO(GradeInDTO gradeInDTO) {
-        Grade grade = new Grade();
-        grade.setId(gradeInDTO.getId());
+        Grade grade = gradeMapper.toEntity(gradeInDTO);
         grade.setStudent(studentService.getById(gradeInDTO.getStudentId()));
         grade.setSubject(subjectService.getById(gradeInDTO.getSubjectId()));
         grade.setTeacher(teacherService.getById(gradeInDTO.getTeacherId()));
-        grade.setDate(gradeInDTO.getDate());
-        grade.setGrade(gradeInDTO.getGrade());
-        grade.setComment(gradeInDTO.getComment());
         gradeRepository.saveOrUpdate(grade);
     }
 
@@ -125,40 +132,43 @@ public class GradeServiceImpl implements GradeService {
         List<Student> students = studentService.getAll();
         List<StudentOutDTO> studentOutDTOS = students
                 .stream()
-                .map(StudentOutDTO::new)
+                .map(studentMapper::toOutDTO)
                 .toList();
 
         List<Subject> subjects = subjectService.getAll();
         List<SubjectOutDTO> subjectOutDTOS = subjects
                 .stream()
-                .map(SubjectOutDTO::new)
+                .map(subjectMapper::toOutDTO)
                 .toList();
 
         User user = userService.getCurrentUser();
         Teacher teacher = teacherService.getByUserNameId(user.getId());
+
         if (teacher != null) {
+            TeacherOutDTO teacherOutDTO = teacherMapper.toOutDTO(teacher);
             List<GradeOutDTO> grades = getGradesByTeacherIdAndFilters(subjectId, dateStr, teacher.getId(), page, pageSize)
                     .stream()
-                    .map(GradeOutDTO::new)
+                    .map(gradeMapper::toOutDTO)
                     .toList();
-            prepareGradeModel(model, grades, studentOutDTOS, subjectOutDTOS, teacher, gradeOutDTO, dateStr, null, page, pageSize);
-        }
-        else {
+            prepareGradeModel(model, grades, studentOutDTOS, subjectOutDTOS, teacherOutDTO, gradeOutDTO, dateStr, null, page, pageSize);
+        } else {
             Student student = studentService.getByUserNameId(user.getId());
+            StudentOutDTO studentOutDTO = studentMapper.toOutDTO(student);
             List<GradeOutDTO> grades = getGradesByStudentIdAndFilters(subjectId, dateStr, student.getId(), page, pageSize)
                     .stream()
-                    .map(GradeOutDTO::new)
+                    .map(gradeMapper::toOutDTO)
                     .toList();
 
-            prepareGradeModel(model, grades, studentOutDTOS, subjectOutDTOS, null, gradeOutDTO, dateStr, student, page, pageSize);
+            prepareGradeModel(model, grades, studentOutDTOS, subjectOutDTOS, null, gradeOutDTO, dateStr,
+                    studentOutDTO, page, pageSize);
         }
     }
 
     @Override
     public void prepareGradeModel(Model model, List<GradeOutDTO> grades, List<StudentOutDTO> students,
-                                  List<SubjectOutDTO> subjects, Teacher teacher, GradeOutDTO gradeOutDTO,
-                                  String dateStr, Student student, int page, int pageSize) {
-//prepare teacher and student dto
+                                  List<SubjectOutDTO> subjects, TeacherOutDTO teacher, GradeOutDTO gradeOutDTO,
+                                  String dateStr, StudentOutDTO student, int page, int pageSize) {
+
         model.addAttribute("grades", grades);
         model.addAttribute("students", students);
         model.addAttribute("subjects", subjects);
@@ -175,11 +185,32 @@ public class GradeServiceImpl implements GradeService {
         }
     }
 
+    public void prepareValidPage(GradeInDTO gradeInDTO, Model model) {
+        List<Student> students = studentService.getAll();
+        List<StudentOutDTO> studentOutDTOS = students
+                .stream()
+                .map(studentMapper::toOutDTO)
+                .toList();
+
+        List<Subject> subjects = subjectService.getAll();
+        List<SubjectOutDTO> subjectOutDTOS = subjects
+                .stream()
+                .map(subjectMapper::toOutDTO)
+                .toList();
+
+        Teacher teacher = teacherService.getById(gradeInDTO.getTeacherId());
+
+        model.addAttribute("students", studentOutDTOS);
+        model.addAttribute("subjects", subjectOutDTOS);
+        model.addAttribute("gradeInDTO", gradeInDTO);
+        model.addAttribute("teacher", teacher);
+    }
+
 
     @Override
     public void prepareEditPage(Model model, Long gradeId) {
         Grade grade = getById(gradeId);
-        GradeOutDTO gradeOutDTO = new GradeOutDTO(grade);
+        GradeOutDTO gradeOutDTO = gradeMapper.toOutDTO(grade);
         prepareGradePage(model, gradeOutDTO, null, null, 0, 0);
     }
 

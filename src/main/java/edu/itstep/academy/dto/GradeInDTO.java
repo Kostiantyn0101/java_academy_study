@@ -1,10 +1,11 @@
 package edu.itstep.academy.dto;
 
-import edu.itstep.academy.entity.Grade;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 
@@ -12,22 +13,19 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class GradeInDTO {
     private Long id;
+    @NotNull(message = "Student is required")
     private Long studentId;
+    @NotNull(message = "Subject is required")
     private Long subjectId;
+    @NotNull(message = "Teacher is required")
     private Long teacherId;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
-    private int grade;
-    private String comment;
 
-    public GradeInDTO(Grade grade)
-    {
-        this.id = grade.getId();
-        this.studentId = grade.getStudent().getId();
-        this.subjectId = grade.getSubject().getId();
-        this.teacherId = grade.getTeacher().getId();
-        this.date = grade.getDate();
-        this.grade = grade.getGrade();
-        this.comment = grade.getComment();
-    }
+    @NotNull(message = "Grade is required")
+    private int grade;
+    @NotNull(message = "Comment is required")
+    @NotBlank(message = "Comment cannot be empty")
+    private String comment;
 }

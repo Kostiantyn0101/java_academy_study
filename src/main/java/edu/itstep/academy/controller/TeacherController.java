@@ -47,8 +47,9 @@ public class TeacherController {
     }
 
     @PostMapping("/grades/save")
-    public String saveGrade(@Valid @ModelAttribute("gradeDTO") GradeInDTO gradeInDTO, BindingResult result) {
+    public String saveGrade(@ModelAttribute("gradeOutDTO") @Valid GradeInDTO gradeInDTO, BindingResult result, Model model) {
         if (result.hasErrors()) {
+            gradeService.prepareValidPage(gradeInDTO, model);
             return "grade-form";
         }
         gradeService.saveGradeDTO(gradeInDTO);

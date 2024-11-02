@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class StudentOutDTO {
+public class TeacherOutDTO {
     private Long id;
     private String firstName;
     private String lastName;
